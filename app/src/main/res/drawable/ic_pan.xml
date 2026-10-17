@@ -1,0 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2026 Gildas Le Drogoff and FaceBlur contributors
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<vector
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="960"
+  android:viewportHeight="960"
+>
+  <path
+    android:fillColor="@android:color/white"
+    android:fillType="evenOdd"
+    android:pathData="M400,360L560,360L560,240L680,240L480,40L280,240L400,240ZM360,400L240,400L240,280L40,480L240,680L240,560L360,560ZM920,480L720,280L720,400L600,400L600,560L720,560L720,680ZM560,600L400,600L400,720L280,720L480,920L680,720L560,720Z"
+  />
+</vector>

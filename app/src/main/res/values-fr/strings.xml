@@ -1,0 +1,130 @@
+<!--
+SPDX-FileCopyrightText: 2026 Gildas Le Drogoff and FaceBlur contributors
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<resources>
+  <string name="action_open">Ouvrir une photo</string>
+  <string name="action_save">Enregistrer</string>
+  <string name="action_share">Partager</string>
+  <string name="empty_title">Aucune image</string>
+  <string name="empty_body"
+    >Ouvrez une photo pour détecter et flouter les visages.</string
+  >
+  <string name="loading">Détection des visages…</string>
+  <string name="rendering">Mise à jour de l\'aperçu…</string>
+  <string name="hint_edit"
+    >Touchez une zone pour activer ou désactiver son flou.</string
+  >
+  <string name="cd_fit_screen">Ajuster l\'image à l\'écran</string>
+  <string name="cd_preview"
+    >Aperçu de la photo, zones floutées : %1$d sur %2$d</string
+  >
+  <string name="section_detection">Détection</string>
+  <plurals name="detected_faces">
+    <item quantity="one">%d visage détecté</item>
+    <item quantity="many">%d visages détectés</item>
+    <item quantity="other">%d visages détectés</item>
+  </plurals>
+  <plurals name="manual_zones">
+    <item quantity="one">%d zone tracée</item>
+    <item quantity="many">%d zones tracées</item>
+    <item quantity="other">%d zones tracées</item>
+  </plurals>
+  <string name="blurred_summary">Zones floutées : %1$d / %2$d</string>
+  <string name="threshold_label">Seuil de détection : %.2f</string>
+  <string name="action_blur_all">Tout flouter</string>
+  <string name="action_blur_none">Tout exclure</string>
+  <string name="action_undo">Annuler</string>
+  <string name="action_redo">Rétablir</string>
+  <string name="action_reset">Réinitialiser</string>
+  <string name="show_result">Aperçu final</string>
+  <string name="blur_type">Type de flou</string>
+  <string name="blur_type_gaussian">Gaussien</string>
+  <string name="blur_type_mosaic">Mosaïque</string>
+  <string name="blur_strength">Force du flou : %d</string>
+  <string name="draw_boxes">Dessiner les cadres dans l\'export</string>
+  <string name="section_export">Export</string>
+  <string name="export_format">Format</string>
+  <string name="keep_metadata">Conserver les métadonnées</string>
+  <string name="metadata_stripped_hint"
+    >Les métadonnées (date, appareil, titre…) sont supprimées.</string
+  >
+  <string name="metadata_kept_hint"
+    >Date, appareil, réglages de prise de vue, titre et légende sont conservés.
+    La vignette intégrée et les régions de visages sont toujours retirées.
+    Android ne transmet pas la localisation des photos choisies.</string
+  >
+  <string name="msg_saved">Enregistré : %s</string>
+  <string name="msg_saved_metadata_kept"
+    >Enregistré avec les métadonnées : %s</string
+  >
+  <string name="msg_saved_no_metadata"
+    >Enregistré : %s (l\'original n\'avait aucune métadonnée à
+    conserver)</string
+  >
+  <string name="msg_saved_metadata_failed"
+    >Enregistré sans métadonnées (écriture impossible) : %s</string
+  >
+  <string name="error_load">Impossible d\'ouvrir l\'image : %s</string>
+  <string name="error_save">Impossible d\'enregistrer l\'image : %s</string>
+  <string name="error_render">Échec de l\'aperçu : %s</string>
+  <string name="error_unknown">erreur inconnue</string>
+  <string name="credits_title">Crédits et licences</string>
+  <string name="cd_back">Retour</string>
+  <string name="credits_version">Version %s</string>
+  <string name="credits_app_tagline"
+    >Floutez les visages de vos photos. Tout se passe sur votre appareil, sans
+    réseau.</string
+  >
+  <string name="credits_section_developer">Développeur</string>
+  <string name="credits_developer_subtitle">Conception et développement</string>
+  <string name="credits_source_code">Code source sur GitHub</string>
+  <string name="credits_section_license">Licence</string>
+  <string name="credits_app_subtitle">Cette application</string>
+  <string name="credits_section_detection">Détection des visages</string>
+  <string name="credits_section_libraries">Bibliothèques</string>
+  <string name="credits_yunet_subtitle"
+    >Modèle de détection des visages (OpenCV Zoo)</string
+  >
+  <string name="credits_kotlin_subtitle">Langage de programmation</string>
+  <string name="credits_androidx_subtitle"
+    >Bibliothèques de l\'interface (Compose, Material 3, Activity, Lifecycle,
+    Window, ExifInterface)</string
+  >
+  <string name="discard_title">Quitter sans enregistrer ?</string>
+  <string name="discard_body"
+    >Les zones floutées et les réglages de cette photo seront perdus.</string
+  >
+  <string name="action_discard">Quitter</string>
+  <string name="action_cancel">Annuler</string>
+  <string name="settings_title">Paramètres</string>
+  <string name="settings_section_appearance">Apparence</string>
+  <string name="settings_theme">Thème</string>
+  <string name="settings_theme_system">Système</string>
+  <string name="settings_theme_light">Clair</string>
+  <string name="settings_theme_dark">Sombre</string>
+  <string name="settings_section_about">À propos</string>
+  <string name="cd_zoom_in">Zoom avant</string>
+  <string name="cd_zoom_out">Zoom arrière</string>
+  <string name="cd_pan_mode">Déplacer l\'image avec un doigt</string>
+  <string name="onboarding_welcome_title">Bienvenue dans FaceBlur</string>
+  <string name="onboarding_welcome_body"
+    >Ouvrez une photo : les visages sont détectés automatiquement, et vous
+    choisissez ceux à flouter. Tout se passe sur votre appareil, sans réseau.</string
+  >
+  <string name="onboarding_marker_title"
+    >Le cadre vert n\'est pas enregistré</string
+  >
+  <string name="onboarding_marker_body"
+    >Les cadres verts signalent seulement les zones floutées dans
+    l\'application. Ils n\'apparaissent jamais dans les images enregistrées ou
+    partagées.</string
+  >
+  <string name="onboarding_marker_preview">Dans l\'application</string>
+  <string name="onboarding_marker_saved">Image enregistrée</string>
+  <string name="onboarding_skip">Passer</string>
+  <string name="onboarding_next">Suivant</string>
+  <string name="onboarding_start">Commencer</string>
+  <string name="onboarding_page">Page %1$d sur %2$d</string>
+</resources>

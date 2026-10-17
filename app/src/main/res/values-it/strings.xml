@@ -1,0 +1,126 @@
+<!--
+SPDX-FileCopyrightText: 2026 Gildas Le Drogoff and FaceBlur contributors
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<resources>
+  <string name="action_open">Apri una foto</string>
+  <string name="action_save">Salva</string>
+  <string name="action_share">Condividi</string>
+  <string name="empty_title">Nessuna immagine</string>
+  <string name="empty_body"
+    >Apri una foto per rilevare e sfocare i volti.</string
+  >
+  <string name="loading">Rilevamento dei volti…</string>
+  <string name="rendering">Aggiornamento dell\'anteprima…</string>
+  <string name="hint_edit"
+    >Tocca una zona per togliere o ripristinare la sfocatura.</string
+  >
+  <string name="cd_fit_screen">Adatta l\'immagine allo schermo</string>
+  <string name="cd_preview"
+    >Anteprima della foto, zone sfocate: %1$d di %2$d</string
+  >
+  <string name="section_detection">Rilevamento</string>
+  <plurals name="detected_faces">
+    <item quantity="one">%d volto rilevato</item>
+    <item quantity="many">%d volti rilevati</item>
+    <item quantity="other">%d volti rilevati</item>
+  </plurals>
+  <plurals name="manual_zones">
+    <item quantity="one">%d zona disegnata</item>
+    <item quantity="many">%d zone disegnate</item>
+    <item quantity="other">%d zone disegnate</item>
+  </plurals>
+  <string name="blurred_summary">Zone sfocate: %1$d / %2$d</string>
+  <string name="threshold_label">Soglia di rilevamento: %.2f</string>
+  <string name="action_blur_all">Sfoca tutto</string>
+  <string name="action_blur_none">Escludi tutto</string>
+  <string name="action_undo">Annulla</string>
+  <string name="action_redo">Ripeti</string>
+  <string name="action_reset">Ripristina</string>
+  <string name="show_result">Anteprima finale</string>
+  <string name="blur_type">Tipo di sfocatura</string>
+  <string name="blur_type_gaussian">Gaussiana</string>
+  <string name="blur_type_mosaic">Mosaico</string>
+  <string name="blur_strength">Intensità della sfocatura: %d</string>
+  <string name="draw_boxes">Disegna i riquadri nell\'esportazione</string>
+  <string name="section_export">Esportazione</string>
+  <string name="export_format">Formato</string>
+  <string name="keep_metadata">Conserva i metadati</string>
+  <string name="metadata_stripped_hint"
+    >I metadati (data, dispositivo, titolo…) vengono rimossi.</string
+  >
+  <string name="metadata_kept_hint"
+    >Data, dispositivo, impostazioni di scatto, titolo e didascalia vengono
+    conservati. La miniatura incorporata e le aree dei volti vengono sempre
+    rimosse. Android non condivide la posizione delle foto scelte.</string
+  >
+  <string name="msg_saved">Salvato: %s</string>
+  <string name="msg_saved_metadata_kept">Salvato con i metadati: %s</string>
+  <string name="msg_saved_no_metadata"
+    >Salvato: %s (l\'originale non aveva metadati da conservare)</string
+  >
+  <string name="msg_saved_metadata_failed"
+    >Salvato senza metadati (impossibile scriverli): %s</string
+  >
+  <string name="error_load">Impossibile aprire l\'immagine: %s</string>
+  <string name="error_save">Impossibile salvare l\'immagine: %s</string>
+  <string name="error_render">Anteprima non riuscita: %s</string>
+  <string name="error_unknown">errore sconosciuto</string>
+  <string name="credits_title">Crediti e licenze</string>
+  <string name="cd_back">Indietro</string>
+  <string name="credits_version">Versione %s</string>
+  <string name="credits_app_tagline"
+    >Sfoca i volti nelle tue foto. Tutto avviene sul tuo dispositivo, senza
+    rete.</string
+  >
+  <string name="credits_section_developer">Sviluppatore</string>
+  <string name="credits_developer_subtitle">Progettazione e sviluppo</string>
+  <string name="credits_source_code">Codice sorgente su GitHub</string>
+  <string name="credits_section_license">Licenza</string>
+  <string name="credits_app_subtitle">Questa applicazione</string>
+  <string name="credits_section_detection">Rilevamento dei volti</string>
+  <string name="credits_section_libraries">Librerie</string>
+  <string name="credits_yunet_subtitle"
+    >Modello di rilevamento dei volti (OpenCV Zoo)</string
+  >
+  <string name="credits_kotlin_subtitle">Linguaggio di programmazione</string>
+  <string name="credits_androidx_subtitle"
+    >Librerie dell\'interfaccia (Compose, Material 3, Activity, Lifecycle,
+    Window, ExifInterface)</string
+  >
+  <string name="discard_title">Uscire senza salvare?</string>
+  <string name="discard_body"
+    >Le zone sfocate e le impostazioni di questa foto andranno perse.</string
+  >
+  <string name="action_discard">Esci</string>
+  <string name="action_cancel">Annulla</string>
+  <string name="settings_title">Impostazioni</string>
+  <string name="settings_section_appearance">Aspetto</string>
+  <string name="settings_theme">Tema</string>
+  <string name="settings_theme_system">Sistema</string>
+  <string name="settings_theme_light">Chiaro</string>
+  <string name="settings_theme_dark">Scuro</string>
+  <string name="settings_section_about">Informazioni</string>
+  <string name="cd_zoom_in">Ingrandisci</string>
+  <string name="cd_zoom_out">Riduci</string>
+  <string name="cd_pan_mode">Sposta l\'immagine con un dito</string>
+  <string name="onboarding_welcome_title">Benvenuto in FaceBlur</string>
+  <string name="onboarding_welcome_body"
+    >Apri una foto: i volti vengono rilevati automaticamente e scegli tu quali
+    sfocare. Tutto avviene sul tuo dispositivo, senza rete.</string
+  >
+  <string name="onboarding_marker_title"
+    >La cornice verde non viene salvata</string
+  >
+  <string name="onboarding_marker_body"
+    >Le cornici verdi indicano le zone sfocate solo nell\'app. Non compaiono mai
+    nelle immagini salvate o condivise.</string
+  >
+  <string name="onboarding_marker_preview">Nell\'app</string>
+  <string name="onboarding_marker_saved">Immagine salvata</string>
+  <string name="onboarding_skip">Salta</string>
+  <string name="onboarding_next">Avanti</string>
+  <string name="onboarding_start">Inizia</string>
+  <string name="onboarding_page">Pagina %1$d di %2$d</string>
+</resources>

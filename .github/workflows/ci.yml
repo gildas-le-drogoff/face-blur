@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Verify model checksum
+        # Source and checksum documented in face_detection_yunet_2026may.SOURCE.md.
+        working-directory: app/src/main/assets
+        run: sha256sum -c face_detection_yunet_2026may.onnx.sha256
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          # The action's default is "tools platform-tools"; Google removed the
+          # obsolete "tools" package from the SDK repository, so the default makes
+          # sdkmanager exit 1. No NDK/CMake needed: inference is pure Kotlin.
+          packages: platform-tools
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          # Don't inject the dependency-graph plugin — it adds artifacts to the
+          # build classpath.
+          dependency-graph: disabled
+          # Only main writes the cache; PRs/branches read it. Cuts cache churn.
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Lint, test and assemble debug APK
+        run: ./gradlew lint testDebugUnitTest assembleDebug --stacktrace
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: faceblur-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+
+      - name: Upload test & lint reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: reports
+          path: |
+            app/build/reports/**
+          if-no-files-found: ignore

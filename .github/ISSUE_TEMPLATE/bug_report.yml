@@ -1,0 +1,44 @@
+name: Bug report
+description: Report a problem with FaceBlur
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please do **not** report security issues here —
+        use a private security advisory (see the link on the issue chooser).
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Settings → About, or the versionName/versionCode.
+      placeholder: "1.0 (1)"
+    validations:
+      required: true
+  - type: input
+    id: android
+    attributes:
+      label: Android version and device
+      placeholder: "Android 14, Pixel 6"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. …
+        2. …
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs (optional)
+      description: "`adb logcat -d | rg (FaceDetection)` output, with any private data redacted."
+      render: shell

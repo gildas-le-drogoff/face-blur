@@ -1,0 +1,1 @@
+First public release: on-device face detection and blurring (Gaussian or mosaic), manual zones, zoom and pan, JPEG/PNG/WebP export, optional metadata, available in five languages.

@@ -1,0 +1,128 @@
+<!--
+SPDX-FileCopyrightText: 2026 Gildas Le Drogoff and FaceBlur contributors
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+<resources>
+  <string name="action_open">Foto öffnen</string>
+  <string name="action_save">Speichern</string>
+  <string name="action_share">Teilen</string>
+  <string name="empty_title">Kein Bild</string>
+  <string name="empty_body"
+    >Öffne ein Foto, um Gesichter zu erkennen und zu verwischen.</string
+  >
+  <string name="loading">Gesichter werden erkannt…</string>
+  <string name="rendering">Vorschau wird aktualisiert…</string>
+  <string name="hint_edit"
+    >Tippe auf einen Bereich, um das Weichzeichnen zu entfernen oder
+    wiederherzustellen.</string
+  >
+  <string name="cd_fit_screen">Bild an den Bildschirm anpassen</string>
+  <string name="cd_preview"
+    >Fotovorschau, weichgezeichnete Bereiche: %1$d von %2$d</string
+  >
+  <string name="section_detection">Erkennung</string>
+  <plurals name="detected_faces">
+    <item quantity="one">%d Gesicht erkannt</item>
+    <item quantity="other">%d Gesichter erkannt</item>
+  </plurals>
+  <plurals name="manual_zones">
+    <item quantity="one">%d gezeichneter Bereich</item>
+    <item quantity="other">%d gezeichnete Bereiche</item>
+  </plurals>
+  <string name="blurred_summary">Weichgezeichnete Bereiche: %1$d / %2$d</string>
+  <string name="threshold_label">Erkennungsschwelle: %.2f</string>
+  <string name="action_blur_all">Alle verwischen</string>
+  <string name="action_blur_none">Alle ausschließen</string>
+  <string name="action_undo">Rückgängig</string>
+  <string name="action_redo">Wiederholen</string>
+  <string name="action_reset">Zurücksetzen</string>
+  <string name="show_result">Endvorschau</string>
+  <string name="blur_type">Art der Unschärfe</string>
+  <string name="blur_type_gaussian">Gauß</string>
+  <string name="blur_type_mosaic">Mosaik</string>
+  <string name="blur_strength">Unschärfestärke: %d</string>
+  <string name="draw_boxes">Rahmen beim Export zeichnen</string>
+  <string name="section_export">Export</string>
+  <string name="export_format">Format</string>
+  <string name="keep_metadata">Metadaten behalten</string>
+  <string name="metadata_stripped_hint"
+    >Metadaten (Datum, Gerät, Titel…) werden entfernt.</string
+  >
+  <string name="metadata_kept_hint"
+    >Datum, Gerät, Aufnahmeeinstellungen, Titel und Beschreibung bleiben
+    erhalten. Das eingebettete Vorschaubild und die Gesichtsbereiche werden
+    immer entfernt. Android gibt den Standort ausgewählter Fotos nicht
+    weiter.</string
+  >
+  <string name="msg_saved">Gespeichert: %s</string>
+  <string name="msg_saved_metadata_kept">Mit Metadaten gespeichert: %s</string>
+  <string name="msg_saved_no_metadata"
+    >Gespeichert: %s (das Original hatte keine Metadaten)</string
+  >
+  <string name="msg_saved_metadata_failed"
+    >Ohne Metadaten gespeichert (Schreiben nicht möglich): %s</string
+  >
+  <string name="error_load">Bild kann nicht geöffnet werden: %s</string>
+  <string name="error_save">Bild kann nicht gespeichert werden: %s</string>
+  <string name="error_render">Vorschau fehlgeschlagen: %s</string>
+  <string name="error_unknown">unbekannter Fehler</string>
+  <string name="credits_title">Credits und Lizenzen</string>
+  <string name="cd_back">Zurück</string>
+  <string name="credits_version">Version %s</string>
+  <string name="credits_app_tagline"
+    >Verwischen Sie die Gesichter auf Ihren Fotos. Alles geschieht auf Ihrem
+    Gerät, ohne Netzwerk.</string
+  >
+  <string name="credits_section_developer">Entwickler</string>
+  <string name="credits_developer_subtitle">Design und Entwicklung</string>
+  <string name="credits_source_code">Quellcode auf GitHub</string>
+  <string name="credits_section_license">Lizenz</string>
+  <string name="credits_app_subtitle">Diese Anwendung</string>
+  <string name="credits_section_detection">Gesichtserkennung</string>
+  <string name="credits_section_libraries">Bibliotheken</string>
+  <string name="credits_yunet_subtitle"
+    >Gesichtserkennungsmodell (OpenCV Zoo)</string
+  >
+  <string name="credits_kotlin_subtitle">Programmiersprache</string>
+  <string name="credits_androidx_subtitle"
+    >Bibliotheken der Oberfläche (Compose, Material 3, Activity, Lifecycle,
+    Window, ExifInterface)</string
+  >
+  <string name="discard_title">Ohne Speichern beenden?</string>
+  <string name="discard_body"
+    >Die weichgezeichneten Bereiche und Einstellungen dieses Fotos gehen
+    verloren.</string
+  >
+  <string name="action_discard">Beenden</string>
+  <string name="action_cancel">Abbrechen</string>
+  <string name="settings_title">Einstellungen</string>
+  <string name="settings_section_appearance">Darstellung</string>
+  <string name="settings_theme">Design</string>
+  <string name="settings_theme_system">System</string>
+  <string name="settings_theme_light">Hell</string>
+  <string name="settings_theme_dark">Dunkel</string>
+  <string name="settings_section_about">Über</string>
+  <string name="cd_zoom_in">Vergrößern</string>
+  <string name="cd_zoom_out">Verkleinern</string>
+  <string name="cd_pan_mode">Bild mit einem Finger verschieben</string>
+  <string name="onboarding_welcome_title">Willkommen bei FaceBlur</string>
+  <string name="onboarding_welcome_body"
+    >Öffne ein Foto: Gesichter werden automatisch erkannt, und du wählst aus,
+    welche weichgezeichnet werden. Alles geschieht auf deinem Gerät, ohne
+    Netzwerk.</string
+  >
+  <string name="onboarding_marker_title"
+    >Der grüne Rahmen wird nicht gespeichert</string
+  >
+  <string name="onboarding_marker_body"
+    >Grüne Rahmen zeigen die weichgezeichneten Bereiche nur in der App an. Sie
+    erscheinen nie in gespeicherten oder geteilten Bildern.</string
+  >
+  <string name="onboarding_marker_preview">In der App</string>
+  <string name="onboarding_marker_saved">Gespeichertes Bild</string>
+  <string name="onboarding_skip">Überspringen</string>
+  <string name="onboarding_next">Weiter</string>
+  <string name="onboarding_start">Los geht\'s</string>
+  <string name="onboarding_page">Seite %1$d von %2$d</string>
+</resources>
