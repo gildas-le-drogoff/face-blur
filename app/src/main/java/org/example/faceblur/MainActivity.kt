@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FaceDetectionLog.verbose = true // TMP_MEASURE
+        FaceDetectionLog.verbose = (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
         enableEdgeToEdge()
         setContent {
             val dark = isSystemInDarkTheme()
