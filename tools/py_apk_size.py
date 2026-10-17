@@ -20,7 +20,7 @@ import zipfile
 from collections import defaultdict
 from pathlib import Path
 
-DEFAULT_APK = "app/build/intermediates/apk/debug/app-debug.apk"
+DEFAULT_APK = "app/build/outputs/apk/release/app-release.apk"
 
 KIB = 1024
 

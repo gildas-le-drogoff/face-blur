@@ -1,5 +1,6 @@
 package org.example.faceblur.data.onnx
 
+import org.example.faceblur.FaceDetectionLog
 import java.util.stream.IntStream
 import kotlin.math.exp
 import kotlin.math.max
@@ -24,12 +25,19 @@ class OnnxRunner(private val model: OnnxModel) {
     fun run(input: Tensor): Map<String, Tensor> {
         val values = HashMap<String, Tensor>(model.floatInits)
         values[model.inputs.single()] = input
+        val nanosPerOp = HashMap<String, Long>()
         for ((i, node) in model.nodes.withIndex()) {
+            val start = System.nanoTime()
             val result = eval(node, values)
+            nanosPerOp[node.opType] = (nanosPerOp[node.opType] ?: 0L) + System.nanoTime() - start
             values[node.outputs.single()] = result
             for (name in node.inputs) {
                 if (lastUse[name] == i && name !in model.outputs && name !in model.floatInits) values.remove(name)
             }
+        }
+        FaceDetectionLog.d(TAG) {
+            nanosPerOp.entries.sortedByDescending { it.value }
+                .joinToString(prefix = "Time per operator: ") { "${it.key} ${it.value / 1_000_000} ms" }
         }
         return model.outputs.associateWith { values.getValue(it) }
     }
@@ -225,6 +233,7 @@ class OnnxRunner(private val model: OnnxModel) {
         Tensor(x.shape, FloatArray(x.data.size) { f(x.data[it]) })
 
     private companion object {
+        const val TAG = "OnnxRunner"
         val SUPPORTED = setOf("Conv", "Relu", "Sigmoid", "MaxPool", "Resize", "Add", "Transpose", "Reshape")
 
         /** Taille des blocs de travail (pixels de sortie) répartis entre les cœurs. */
