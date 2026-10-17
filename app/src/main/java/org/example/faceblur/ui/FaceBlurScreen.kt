@@ -190,7 +190,6 @@ private fun EditorPane(
                     ZoomableFaceCanvas(
                         image = imageBitmap,
                         regions = state.regions,
-                        mode = state.mode,
                         showOverlay = state.showOverlay,
                         zoom = zoom,
                         description = stringResource(R.string.cd_preview, state.blurredCount, state.regions.size),
@@ -208,7 +207,7 @@ private fun EditorPane(
                     }
                 }
                 Text(
-                    stringResource(if (state.mode == EditMode.SELECT) R.string.hint_select else R.string.hint_draw),
+                    stringResource(R.string.hint_edit),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center,
@@ -248,22 +247,8 @@ private fun EditorToolbar(state: FaceBlurUiState, zoom: ZoomState, viewModel: Fa
     Row(
         Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(dimens.spacing),
+        horizontalArrangement = Arrangement.spacedBy(dimens.spacing, Alignment.End),
     ) {
-        SingleChoiceSegmentedButtonRow(Modifier.weight(1f)) {
-            val modes = listOf(
-                Triple(EditMode.SELECT, R.drawable.ic_touch_app, R.string.mode_select),
-                Triple(EditMode.DRAW, R.drawable.ic_highlight_alt, R.string.mode_draw),
-            )
-            modes.forEachIndexed { index, (mode, icon, label) ->
-                SegmentedButton(
-                    selected = state.mode == mode,
-                    onClick = { viewModel.setMode(mode) },
-                    shape = SegmentedButtonDefaults.itemShape(index, modes.size),
-                    icon = { Icon(painterResource(icon), contentDescription = null) },
-                ) { Text(stringResource(label)) }
-            }
-        }
         IconButton(onClick = { viewModel.setShowOverlay(!state.showOverlay) }) {
             Icon(
                 painterResource(if (state.showOverlay) R.drawable.ic_visibility_off else R.drawable.ic_visibility),
@@ -296,10 +281,12 @@ private fun ControlsPanel(state: FaceBlurUiState, viewModel: FaceBlurViewModel, 
                 ).joinToString(" · "),
                 style = MaterialTheme.typography.bodyMedium,
             )
+            // Sens inversé : vers la droite, le seuil baisse et plus de visages sont détectés.
+            val mirror = FaceBlurUiState.MIN_THRESHOLD + FaceBlurUiState.MAX_THRESHOLD
             LabeledSlider(
                 label = stringResource(R.string.threshold_label, state.threshold),
-                value = state.threshold,
-                onValueChange = viewModel::setThreshold,
+                value = mirror - state.threshold,
+                onValueChange = { viewModel.setThreshold(mirror - it) },
                 range = FaceBlurUiState.MIN_THRESHOLD..FaceBlurUiState.MAX_THRESHOLD,
                 enabled = enabled,
             )

@@ -6,10 +6,7 @@
     <string name="loading">Détection des visages…</string>
     <string name="rendering">Mise à jour de l\'aperçu…</string>
 
-    <string name="mode_select">Sélection</string>
-    <string name="mode_draw">Tracer</string>
-    <string name="hint_select">Touchez un visage pour l\'exclure du floutage ou l\'y inclure à nouveau. Pincez pour zoomer.</string>
-    <string name="hint_draw">Glissez pour tracer une zone à flouter. Touchez une zone tracée pour la supprimer. Deux doigts pour zoomer.</string>
+    <string name="hint_edit">Touchez une zone pour retirer ou remettre son flou. Touchez ailleurs ou glissez pour flouter une nouvelle zone. Deux doigts pour zoomer.</string>
     <string name="cd_show_overlay">Afficher les repères des visages</string>
     <string name="cd_hide_overlay">Masquer les repères des visages</string>
     <string name="cd_fit_screen">Ajuster l\'image à l\'écran</string>

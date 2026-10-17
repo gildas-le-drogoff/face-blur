@@ -37,9 +37,7 @@ import org.example.faceblur.domain.ManualRegion
 import org.example.faceblur.domain.RegionId
 import org.example.faceblur.domain.buildRegions
 import org.example.faceblur.domain.hitTest
-import org.example.faceblur.domain.toggled
-
-enum class EditMode { SELECT, DRAW }
+import org.example.faceblur.domain.tapBox
 
 enum class Busy { LOADING, SAVING }
 
@@ -61,7 +59,6 @@ data class FaceBlurUiState(
     val excluded: Set<RegionId> = emptySet(),
     val manual: List<ManualRegion> = emptyList(),
     val nextManualId: Int = 0,
-    val mode: EditMode = EditMode.SELECT,
     val showOverlay: Boolean = true,
     val export: ExportOptions = ExportOptions(),
     val message: UiMessage? = null,
@@ -150,7 +147,6 @@ class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
                         excluded = emptySet(),
                         manual = emptyList(),
                         nextManualId = 0,
-                        mode = EditMode.SELECT,
                     )
                 }
                 FaceDetectionLog.i(TAG) { "Loaded ${loaded.source.name}: ${_state.value.detectedCount} faces at default threshold" }
@@ -175,37 +171,48 @@ class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(blur = transform(it.blur)) }
 
     fun setDrawBoxes(value: Boolean) = _state.update { it.copy(drawBoxes = value) }
-    fun setMode(value: EditMode) = _state.update { it.copy(mode = value) }
     fun setShowOverlay(value: Boolean) = _state.update { it.copy(showOverlay = value) }
     fun setFormat(value: ExportFormat) = _state.update { it.copy(export = it.export.copy(format = value)) }
     fun setKeepMetadata(value: Boolean) = _state.update { it.copy(export = it.export.copy(keepMetadata = value)) }
 
     /**
-     * Toucher en ([x], [y]) (coordonnées image). Sélection : bascule flouté/exclu.
-     * Tracé : supprime la zone manuelle touchée.
+     * Toucher en ([x], [y]) (coordonnées image), un seul geste pour tout :
+     * hors de toute zone → nouvelle zone floutée ; zone exclue → floutée ;
+     * zone floutée → retirée (exclue si détectée, pour pouvoir la reprendre ; supprimée si tracée).
      */
     fun onImageTap(x: Float, y: Float, tolerance: Float) = _state.update { s ->
-        val hit = hitTest(s.regions, x, y, tolerance) ?: return@update s
-        when (s.mode) {
-            EditMode.SELECT -> {
-                FaceDetectionLog.d(TAG) { "Toggle ${hit.id} (blurred=${hit.blurred})" }
-                s.copy(excluded = s.excluded.toggled(hit.id))
+        val hit = hitTest(s.regions, x, y, tolerance)
+        if (hit == null) {
+            val bmp = s.image?.source?.bitmap ?: return@update s
+            val detected = s.regions.filterNot { it.isManual }.map { it.box }
+            return@update s.withManualRegion(tapBox(x, y, detected, bmp.width, bmp.height))
+        }
+        val id = hit.id
+        when {
+            !hit.blurred -> {
+                FaceDetectionLog.d(TAG) { "Blur $id" }
+                s.copy(excluded = s.excluded - id)
             }
-            EditMode.DRAW -> {
-                val id = hit.id as? RegionId.Manual ?: return@update s
+            id is RegionId.Manual -> {
                 FaceDetectionLog.d(TAG) { "Delete manual zone ${id.id}" }
                 s.copy(manual = s.manual.filterNot { it.id == id.id }, excluded = s.excluded - id)
+            }
+            else -> {
+                FaceDetectionLog.d(TAG) { "Exclude $id" }
+                s.copy(excluded = s.excluded + id)
             }
         }
     }
 
-    /** Ajoute une zone tracée à la main, rognée à l'image ; ignorée si quasi vide. */
-    fun addManualRegion(box: FaceBox) = _state.update { s ->
-        val bmp = s.image?.source?.bitmap ?: return@update s
+    fun addManualRegion(box: FaceBox) = _state.update { it.withManualRegion(box) }
+
+    /** Ajoute une zone manuelle, rognée à l'image ; ignorée si quasi vide. */
+    private fun FaceBlurUiState.withManualRegion(box: FaceBox): FaceBlurUiState {
+        val bmp = image?.source?.bitmap ?: return this
         val clamped = box.clampedTo(bmp.width, bmp.height)
-        if (clamped.width < MIN_MANUAL_SIZE || clamped.height < MIN_MANUAL_SIZE) return@update s
-        FaceDetectionLog.d(TAG) { "Manual zone ${s.nextManualId}: $clamped" }
-        s.copy(manual = s.manual + ManualRegion(s.nextManualId, clamped), nextManualId = s.nextManualId + 1)
+        if (clamped.width < MIN_MANUAL_SIZE || clamped.height < MIN_MANUAL_SIZE) return this
+        FaceDetectionLog.d(TAG) { "Manual zone $nextManualId: $clamped" }
+        return copy(manual = manual + ManualRegion(nextManualId, clamped), nextManualId = nextManualId + 1)
     }
 
     fun blurAll() = _state.update { it.copy(excluded = emptySet()) }

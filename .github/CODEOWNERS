@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Tobias Mueller and KabelWacht contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Default owner for everything in the repository.
+*       @muelli

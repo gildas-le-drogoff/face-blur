@@ -66,5 +66,21 @@ private fun distanceToBox(box: FaceBox, x: Float, y: Float): Float {
     return dx * dx + dy * dy
 }
 
-/** Bascule flouté ↔ exclu pour [id]. */
-fun Set<RegionId>.toggled(id: RegionId): Set<RegionId> = if (id in this) this - id else this + id
+/**
+ * Zone posée d'un simple toucher, centrée en ([x], [y]) : taille médiane des visages [detected]
+ * (ceux d'une même photo ont une taille comparable), sinon carré de [FALLBACK_TAP_FRACTION] du petit côté.
+ */
+fun tapBox(x: Float, y: Float, detected: List<FaceBox>, imageWidth: Int, imageHeight: Int): FaceBox {
+    val width: Float
+    val height: Float
+    if (detected.isEmpty()) {
+        width = min(imageWidth, imageHeight) * FALLBACK_TAP_FRACTION
+        height = width
+    } else {
+        width = detected.map { it.width }.sorted()[detected.size / 2]
+        height = detected.map { it.height }.sorted()[detected.size / 2]
+    }
+    return FaceBox(x - width / 2, y - height / 2, x + width / 2, y + height / 2)
+}
+
+const val FALLBACK_TAP_FRACTION = 0.15f

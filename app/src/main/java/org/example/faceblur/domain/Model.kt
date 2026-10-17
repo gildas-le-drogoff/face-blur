@@ -78,8 +78,8 @@ enum class ExportFormat(val extension: String, val mimeType: String) {
     WEBP("webp", "image/webp"),
 }
 
-/** Par défaut les métadonnées sont supprimées. */
-data class ExportOptions(val format: ExportFormat = ExportFormat.JPEG, val keepMetadata: Boolean = false)
+/** Par défaut : WebP, métadonnées conservées (liste blanche d'ExifMetadata, jamais la vignette ni le XMP). */
+data class ExportOptions(val format: ExportFormat = ExportFormat.WEBP, val keepMetadata: Boolean = true)
 
 fun exportFileName(baseName: String, suffix: String, format: ExportFormat, timestampMillis: Long): String =
     listOf(baseName, suffix.ifEmpty { null }, timestampMillis.toString())

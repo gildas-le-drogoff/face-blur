@@ -70,11 +70,11 @@ class FaceSelectionTest {
     }
 
     @Test
-    fun `toggling twice restores the selection`() {
-        val id = RegionId.Manual(1)
-        val once = emptySet<RegionId>().toggled(id)
-        assertEquals(setOf(id), once)
-        assertEquals(emptySet<RegionId>(), once.toggled(id))
+    fun `tap box takes the median face size, or a share of the image without faces`() {
+        val faces = listOf(FaceBox(0f, 0f, 10f, 20f), FaceBox(0f, 0f, 40f, 60f), FaceBox(0f, 0f, 400f, 400f))
+        assertEquals(FaceBox(80f, 70f, 120f, 130f), tapBox(100f, 100f, faces, 1000, 800))
+        val side = 800 * FALLBACK_TAP_FRACTION
+        assertEquals(FaceBox(100f - side / 2, 100f - side / 2, 100f + side / 2, 100f + side / 2), tapBox(100f, 100f, emptyList(), 1000, 800))
     }
 
     @Test
@@ -93,7 +93,8 @@ class FaceSelectionTest {
     }
 
     @Test
-    fun `metadata is stripped by default`() {
-        assertFalse(ExportOptions().keepMetadata)
+    fun `export defaults to webp with metadata kept`() {
+        assertEquals(ExportFormat.WEBP, ExportOptions().format)
+        assertTrue(ExportOptions().keepMetadata)
     }
 }

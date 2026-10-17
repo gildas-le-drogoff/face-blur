@@ -6,10 +6,7 @@
     <string name="loading">Gesichter werden erkannt…</string>
     <string name="rendering">Vorschau wird aktualisiert…</string>
 
-    <string name="mode_select">Auswählen</string>
-    <string name="mode_draw">Zeichnen</string>
-    <string name="hint_select">Tippe auf ein Gesicht, um es vom Weichzeichnen auszunehmen oder wieder einzubeziehen. Zum Zoomen zusammenziehen.</string>
-    <string name="hint_draw">Ziehe, um einen zu verwischenden Bereich zu zeichnen. Tippe auf einen gezeichneten Bereich, um ihn zu löschen. Zum Zoomen zwei Finger verwenden.</string>
+    <string name="hint_edit">Tippe auf einen Bereich, um das Weichzeichnen zu entfernen oder wiederherzustellen. Tippe woanders oder ziehe, um einen neuen Bereich weichzuzeichnen. Zum Zoomen zwei Finger verwenden.</string>
     <string name="cd_show_overlay">Gesichtsmarkierungen anzeigen</string>
     <string name="cd_hide_overlay">Gesichtsmarkierungen ausblenden</string>
     <string name="cd_fit_screen">Bild an den Bildschirm anpassen</string>

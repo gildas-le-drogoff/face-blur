@@ -1,0 +1,42 @@
+name: Cut Release Button
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  cut-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Tag and trigger workflows
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          CODE="$(git rev-list --count HEAD)"
+          TAG="v$CODE"
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG"; then
+            echo "::error::Tag $TAG already exists!"
+            exit 1
+          fi
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG"
+          git push origin "$TAG"
+          
+          echo "Created and pushed tag: $TAG"
+          
+          # Trigger the actual release workflows on the new tag
+          gh workflow run release.yml --ref "$TAG"
+          gh workflow run publish-fdroid.yml --ref "$TAG"
+          
+          echo "Successfully triggered release.yml and publish-fdroid.yml on $TAG"

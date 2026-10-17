@@ -1,0 +1,163 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write      # needed to create a GitHub Release
+  id-token: write      # Sigstore keyless signing (binary transparency)
+  attestations: write  # store the provenance attestation
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      # Surfaced at job level so it can be used in the signing step's `if:` check.
+      # The seed deterministically drives the whole signing identity (key,
+      # keystore, alias, passphrase) via scripts/derive-signing-key.py.
+      APP_SIGNING_SEED: ${{ secrets.APP_SIGNING_SEED }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: recursive  # WireGuard sources are built from source
+          fetch-depth: 0
+
+      - name: Read version and locate changelog
+        id: version
+        run: |
+          CODE="$(git rev-list --count HEAD)"
+          echo "code=${CODE}" >> "$GITHUB_OUTPUT"
+          CHANGELOG="fastlane/metadata/android/en-US/changelogs/${CODE}.txt"
+          if [ -f "$CHANGELOG" ]; then
+            echo "changelog=${CHANGELOG}" >> "$GITHUB_OUTPUT"
+            echo "Using fastlane changelog: ${CHANGELOG}"
+          else
+            echo "changelog=" >> "$GITHUB_OUTPUT"
+            echo "::warning::No fastlane changelog at ${CHANGELOG}; release notes will be auto-generated."
+          fi
+
+      - name: Verify tag matches committed version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          EXPECTED="v${{ steps.version.outputs.code }}"
+          ACTUAL="${GITHUB_REF_NAME}"
+          echo "expected tag ${EXPECTED}; pushed tag ${ACTUAL}"
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::Tag ${ACTUAL} does not match commit count (${EXPECTED}). Please tag exactly with the commit count (e.g. ${EXPECTED})."
+            exit 1
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          # The action's default is "tools platform-tools"; Google removed the
+          # obsolete "tools" package from the SDK repository, so the default makes
+          # sdkmanager exit 1. NDK and CMake are installed in the next step.
+          packages: platform-tools
+
+      - name: Install NDK and CMake
+        run: sdkmanager "ndk;27.2.12479018" "cmake;3.22.1"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          dependency-graph: disabled  # avoids classpath artifacts absent from verification-metadata
+          cache-read-only: true  # tag runs reuse main's cache without churning it
+
+      - name: Assemble release APK
+        run: ./gradlew assembleRelease --stacktrace
+
+      # Google Play accepts only app bundles for new apps. It is built from the
+      # same sources as the APK; Play derives per-device APKs from it, so the
+      # bundle itself is never installed directly.
+      - name: Assemble release bundle (AAB)
+        run: ./gradlew bundleRelease --stacktrace
+
+      # Optional signing: only runs when the signing seed is configured.
+      # F-Droid rebuilds and signs from source, so an unsigned APK is still a valid
+      # release artifact for that channel.
+      - name: Sign APK
+        id: sign
+        if: ${{ env.APP_SIGNING_SEED != '' }}
+        run: |
+          set -euo pipefail
+          pip install --quiet cryptography
+          APP_PASS="$(SEED="$APP_SIGNING_SEED" scripts/derive-signing-key.py app "$RUNNER_TEMP/app.p12")"
+          echo "::add-mask::$APP_PASS"
+          export APP_PASS
+          BUILD_TOOLS="$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)"
+          DIR="app/build/outputs/apk/release"
+          UNSIGNED="$DIR/app-release-unsigned.apk"
+          ALIGNED="$DIR/kabelwacht-${{ steps.version.outputs.code }}-aligned.apk"
+          SIGNED="$DIR/kabelwacht-${{ steps.version.outputs.code }}.apk"
+          "$BUILD_TOOLS/zipalign" -f 4 "$UNSIGNED" "$ALIGNED"
+          "$BUILD_TOOLS/apksigner" sign \
+            --alignment-preserved \
+            --ks "$RUNNER_TEMP/app.p12" \
+            --ks-pass env:APP_PASS \
+            --ks-key-alias app \
+            --out "$SIGNED" "$ALIGNED"
+          # Keep only the signed APK as the release artifact.
+          rm -f "$UNSIGNED" "$ALIGNED"
+
+          # The bundle is signed by jarsigner (apksigner only speaks APK) and
+          # with the separate "play" identity, because Google Play accepts only
+          # RSA keys — the EC key above is rejected as an invalid signature.
+          # This is merely Play's upload key: Play re-signs the APKs it delivers
+          # with a key it holds, so it never reaches a device.
+          AAB_DIR="app/build/outputs/bundle/release"
+          AAB="$AAB_DIR/kabelwacht-${{ steps.version.outputs.code }}.aab"
+          mv "$AAB_DIR/app-release.aab" "$AAB"
+          if [ -f signing/play-cert.pem ]; then
+            PLAY_PASS="$(SEED="$APP_SIGNING_SEED" scripts/derive-signing-key.py play "$RUNNER_TEMP/play.p12")"
+            echo "::add-mask::$PLAY_PASS"
+            export PLAY_PASS
+            jarsigner -keystore "$RUNNER_TEMP/play.p12" \
+              -storepass:env PLAY_PASS \
+              -sigalg SHA256withRSA -digestalg SHA-256 \
+              "$AAB" play
+            jarsigner -verify "$AAB" >/dev/null && echo "bundle signed with the Play upload key"
+          else
+            echo "::warning::signing/play-cert.pem is missing — run the bootstrap-signing workflow; the bundle stays unsigned and Play will reject it."
+          fi
+
+      - name: Generate checksums
+        run: |
+          cd app/build/outputs/apk/release
+          sha256sum *.apk > SHA256SUMS
+          # The bundle lives in a sibling directory; record it under a plain name.
+          for f in ../../bundle/release/*.aab; do
+            [ -e "$f" ] || continue
+            (cd ../../bundle/release && sha256sum "$(basename "$f")")
+          done >> SHA256SUMS
+          cat SHA256SUMS
+
+      # Binary transparency: record each artifact's digest, bound to this exact
+      # workflow run, in the public Sigstore transparency log (Rekor). Verify with:
+      #   gh attestation verify <file> --repo ${{ github.repository }}
+      - name: Attest release artifacts
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4
+        with:
+          subject-path: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+            app/build/outputs/apk/release/SHA256SUMS
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        with:
+          body_path: ${{ steps.version.outputs.changelog }}
+          generate_release_notes: ${{ steps.version.outputs.changelog == '' }}
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+            app/build/outputs/apk/release/SHA256SUMS

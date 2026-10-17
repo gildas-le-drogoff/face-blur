@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # Gradle dependencies (version catalog + build scripts).
+  - package-ecosystem: gradle
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    groups:
+      androidx:
+        patterns: ["androidx.*"]
+      kotlin-compose:
+        patterns: ["org.jetbrains.kotlin*", "androidx.compose*"]
+
+  # GitHub Actions (keeps the SHA-pinned actions up to date; comments carry the tag).
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10

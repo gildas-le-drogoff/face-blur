@@ -4,7 +4,7 @@
 
 **A FAIRE (Priorité Haute)**
 
-- [ ] Tester sur appareil (Pixel 8 Pro) les gestes du canevas : toucher pour exclure, glisser pour tracer, pincer pour zoomer - Échéance : 18/10/2026 / Contexte : aucun appareil branché pendant le développement, seuls compilation, lint et tests JVM ont été validés
+- [ ] Tester sur appareil (Pixel 8 Pro) les gestes du canevas : toucher une zone pour retirer/remettre le flou, toucher hors zone pour en ajouter une, glisser pour tracer, deux doigts pour zoomer/déplacer - Échéance : 18/10/2026 / Contexte : aucun appareil branché pendant le développement, seuls compilation, lint et tests JVM ont été validés
 - [ ] Vérifier sur appareil la conservation des métadonnées en JPEG, PNG et WebP (ExifInterface) et la présence du GPS - Échéance : 18/10/2026 / Contexte : le sélecteur de photos peut retirer la localisation (permission ACCESS_MEDIA_LOCATION non demandée)
 - [ ] Ajouter une licence libre au projet (fichier LICENSE) avant la soumission F-Droid - Échéance : à définir / Contexte : aucune licence dans le dépôt, F-Droid l'exige
 
@@ -21,6 +21,7 @@
 
 **TERMINÉ (Dernières 24h)**
 
+- [x] Mode unique (sélection et tracé fusionnés) : toucher hors zone = nouvelle zone floutée (taille médiane des visages), zone floutée = retirée, zone exclue = floutée ; slider de seuil inversé (droite = plus de visages) ; export par défaut WebP avec métadonnées conservées ; tests JVM et lint OK - Fait le 17/10/2026
 - [x] Modèle unique face_detection_yunet_2026may.onnx (mêmes poids que 2023mar, supprimé) : APK release 1,2 Mo, 29 tests OK, 57/57 visages sur appareil - Fait le 17/10/2026
 - [x] Localisation : italien, allemand, espagnol ajoutés (français et anglais existants, anglais = repli via values/), localeFilters et locales_config pour le sélecteur de langue par application - Fait le 17/10/2026
 - [x] Remplacement de SCRFD (InsightFace, licence non commerciale) par YuNet (OpenCV Zoo, MIT), exécuté par un moteur ONNX en Kotlin pur (data/onnx) : onnxruntime supprimé - Fait le 17/10/2026

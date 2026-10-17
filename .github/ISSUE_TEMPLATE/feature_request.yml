@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an idea for KabelWacht
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the use case or the pain point.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      description: KabelWacht intentionally stays simple and free-software-only.
+      options:
+        - label: This keeps the app free-software and F-Droid-compatible (no proprietary dependencies).
+          required: true

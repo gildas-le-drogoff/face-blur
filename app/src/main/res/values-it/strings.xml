@@ -6,10 +6,7 @@
     <string name="loading">Rilevamento dei volti…</string>
     <string name="rendering">Aggiornamento dell\'anteprima…</string>
 
-    <string name="mode_select">Selezione</string>
-    <string name="mode_draw">Disegno</string>
-    <string name="hint_select">Tocca un volto per escluderlo dalla sfocatura o includerlo di nuovo. Pizzica per zoomare.</string>
-    <string name="hint_draw">Trascina per disegnare una zona da sfocare. Tocca una zona disegnata per eliminarla. Usa due dita per zoomare.</string>
+    <string name="hint_edit">Tocca una zona per togliere o ripristinare la sfocatura. Tocca altrove o trascina per sfocare una nuova zona. Usa due dita per zoomare.</string>
     <string name="cd_show_overlay">Mostra i marcatori dei volti</string>
     <string name="cd_hide_overlay">Nascondi i marcatori dei volti</string>
     <string name="cd_fit_screen">Adatta l\'immagine allo schermo</string>

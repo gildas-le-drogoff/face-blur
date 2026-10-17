@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -41,14 +40,13 @@ import kotlin.math.min
 
 /**
  * Image zoomable avec repères des visages.
- * - Deux doigts : zoom/déplacement (tous modes). Un doigt : déplacement en sélection, tracé en mode tracé.
+ * - Deux doigts : zoom/déplacement. Un doigt qui glisse : tracé d'une zone ([onBoxDrawn]).
  * - Toucher : [onTap] en coordonnées image, avec la tolérance tactile convertie en pixels image.
  */
 @Composable
 fun ZoomableFaceCanvas(
     image: ImageBitmap,
     regions: List<FaceRegion>,
-    mode: EditMode,
     showOverlay: Boolean,
     zoom: ZoomState,
     description: String,
@@ -77,7 +75,7 @@ fun ZoomableFaceCanvas(
                         currentOnTap(ip.x, ip.y, tolerance / zoom.scale)
                     }
                 }
-                .pointerInput(zoom, mode) {
+                .pointerInput(zoom) {
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
                         val slop = viewConfiguration.touchSlop
@@ -99,12 +97,9 @@ fun ZoomableFaceCanvas(
                                     dragging = true
                                 }
                                 if (dragging) {
-                                    when {
-                                        mode == EditMode.SELECT -> zoom.transform(change.position, 1f, change.positionChange())
-                                        !multiTouch -> {
-                                            draftStart = down.position
-                                            draftEnd = change.position
-                                        }
+                                    if (!multiTouch) {
+                                        draftStart = down.position
+                                        draftEnd = change.position
                                     }
                                     change.consume()
                                 }

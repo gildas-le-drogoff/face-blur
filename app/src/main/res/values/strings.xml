@@ -8,10 +8,7 @@
     <string name="loading">Detecting faces…</string>
     <string name="rendering">Updating preview…</string>
 
-    <string name="mode_select">Select</string>
-    <string name="mode_draw">Draw</string>
-    <string name="hint_select">Tap a face to exclude it from the blur or include it again. Pinch to zoom.</string>
-    <string name="hint_draw">Drag to draw a zone to blur. Tap a drawn zone to delete it. Use two fingers to zoom.</string>
+    <string name="hint_edit">Tap a zone to remove or restore its blur. Tap elsewhere or drag to blur a new zone. Use two fingers to zoom.</string>
     <string name="cd_show_overlay">Show face markers</string>
     <string name="cd_hide_overlay">Hide face markers</string>
     <string name="cd_fit_screen">Fit the image to the screen</string>

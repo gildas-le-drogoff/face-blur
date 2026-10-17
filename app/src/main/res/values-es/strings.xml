@@ -6,10 +6,7 @@
     <string name="loading">Detectando rostros…</string>
     <string name="rendering">Actualizando la vista previa…</string>
 
-    <string name="mode_select">Seleccionar</string>
-    <string name="mode_draw">Dibujar</string>
-    <string name="hint_select">Toca un rostro para excluirlo del difuminado o volver a incluirlo. Pellizca para hacer zoom.</string>
-    <string name="hint_draw">Arrastra para dibujar una zona que difuminar. Toca una zona dibujada para eliminarla. Usa dos dedos para hacer zoom.</string>
+    <string name="hint_edit">Toca una zona para quitar o restaurar su difuminado. Toca en otro lugar o arrastra para difuminar una zona nueva. Usa dos dedos para hacer zoom.</string>
     <string name="cd_show_overlay">Mostrar los marcadores de rostros</string>
     <string name="cd_hide_overlay">Ocultar los marcadores de rostros</string>
     <string name="cd_fit_screen">Ajustar la imagen a la pantalla</string>
