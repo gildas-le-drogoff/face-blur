@@ -23,8 +23,8 @@ import org.example.faceblur.FaceDetectionLog
 import org.example.faceblur.data.FaceRenderer
 import org.example.faceblur.data.ImageRepository
 import org.example.faceblur.data.MetadataOutcome
-import org.example.faceblur.data.ScrfdDetector
 import org.example.faceblur.data.SourceImage
+import org.example.faceblur.data.YuNetDetector
 import org.example.faceblur.domain.BlurSettings
 import org.example.faceblur.domain.BlurShape
 import org.example.faceblur.domain.BlurType
@@ -95,8 +95,7 @@ private data class RenderKey(
 @OptIn(ExperimentalCoroutinesApi::class)
 class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
     private val repository = ImageRepository(app)
-    private val detectorLazy = lazy { ScrfdDetector(app) }
-    private val detector by detectorLazy
+    private val detector by lazy { YuNetDetector(app) }
 
     private val _state = MutableStateFlow(FaceBlurUiState())
     val state: StateFlow<FaceBlurUiState> = _state.asStateFlow()
@@ -243,10 +242,6 @@ class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun messageShown() = _state.update { it.copy(message = null) }
-
-    override fun onCleared() {
-        if (detectorLazy.isInitialized()) detector.close()
-    }
 
     private companion object {
         const val TAG = "ViewModel"

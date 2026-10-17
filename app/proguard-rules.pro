@@ -1,3 +1,1 @@
-# Le code natif d'ONNX Runtime retrouve ses classes Java par nom (JNI FindClass) :
-# les règles embarquées dans l'AAR ne couvrent que la télémétrie.
--keep class ai.onnxruntime.** { *; }
+# Aucune règle spécifique : l'application n'a plus de code natif ni de réflexion.

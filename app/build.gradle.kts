@@ -22,9 +22,6 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
-
-        // Pixel 8 Pro (Tensor G3) : arm64 uniquement.
-        ndk { abiFilters += listOf("arm64-v8a") }
     }
     signingConfigs {
         if (keystoreProperties.isNotEmpty()) {
@@ -56,12 +53,23 @@ android {
     }
 
     packaging {
-        // .so compressés dans l'APK (33 Mo -> ~12 Mo pour ORT), extraits à l'installation.
+        // dex et .so compressés dans l'APK (non compressés par défaut dès minSdk 28) :
+        // 1,8 Mo de dex -> ~0,8 Mo à télécharger, décompressé à l'installation.
+        dex { useLegacyPackaging = true }
         jniLibs { useLegacyPackaging = true }
+        // Métadonnées réservées à kotlin-reflect et aux sondes de débogage des coroutines.
+        resources.excludes += listOf("kotlin/**", "META-INF/*.version", "DebugProbesKt.bin")
     }
 
     androidResources {
-        noCompress += "onnx"
+        // Les bibliothèques AndroidX embarquent des dizaines de langues : seules FR/EN servent.
+        localeFilters += listOf("en", "fr")
+    }
+
+    // Bloc de dépendances chiffré pour Google Play : inutile, et refusé par F-Droid.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 
     testOptions {
@@ -80,7 +88,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.exifinterface)
-    implementation(libs.onnxruntime.android)
 
     testImplementation(libs.junit)
 }
