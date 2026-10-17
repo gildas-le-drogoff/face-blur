@@ -1,5 +1,6 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability
-    url: https://github.com/muelli/KabelWacht/security/advisories/new
-    about: Please report security issues privately, not as public issues (see SECURITY.md).
+    # TODO: replace <owner> with the GitHub owner (user or org) of this repository.
+    url: https://github.com/<owner>/InsightFace/security/advisories/new
+    about: Please report security issues privately, not as public issues.

@@ -15,46 +15,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          submodules: recursive  # WireGuard sources are built from source
 
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '25'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
         with:
           # The action's default is "tools platform-tools"; Google removed the
           # obsolete "tools" package from the SDK repository, so the default makes
-          # sdkmanager exit 1. NDK and CMake are installed in the next step.
+          # sdkmanager exit 1. No NDK/CMake needed: inference is pure Kotlin.
           packages: platform-tools
-
-      - name: Install NDK and CMake
-        run: sdkmanager "ndk;27.2.12479018" "cmake;3.22.1"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
           # Don't inject the dependency-graph plugin — it adds artifacts to the
-          # build classpath that aren't in gradle/verification-metadata.xml.
+          # build classpath.
           dependency-graph: disabled
           # Only main writes the cache; PRs/branches read it. Cuts cache churn.
           cache-read-only: ${{ github.ref != 'refs/heads/main' }}
 
       - name: Lint, test and assemble debug APK
-        # Native WireGuard is compiled for one ABI only here: CI validates that the
-        # from-source build works without paying for all four ABIs on every push.
-        # Tag-driven workflows (release / publish-fdroid / reproducible) build all
-        # ABIs. The uploaded debug APK is arm64-only as a result.
-        run: ./gradlew lint testDebugUnitTest assembleDebug -PtunnelAbis=arm64-v8a --stacktrace
+        run: ./gradlew lint testDebugUnitTest assembleDebug --stacktrace
 
       - name: Upload debug APK
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: kabelwacht-debug-apk
+          name: faceblur-debug-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
 

@@ -39,7 +39,9 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
+            // keystore.properties présent (local ou recréé par la CI) : signer avec la
+            // clé d'upload ; sinon repli sur la clé de debug pour rester buildable.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
         }
     }
 

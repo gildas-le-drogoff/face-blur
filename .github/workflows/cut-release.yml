@@ -20,23 +20,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          CODE="$(git rev-list --count HEAD)"
-          TAG="v$CODE"
-          
-          if git ls-remote --tags origin | grep -q "refs/tags/$TAG"; then
-            echo "::error::Tag $TAG already exists!"
+          VERSION="$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts)"
+          if [ -z "$VERSION" ]; then
+            echo "::error::versionName not found in app/build.gradle.kts"
             exit 1
           fi
-          
+          TAG="v$VERSION"
+
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG"; then
+            echo "::error::Tag $TAG already exists! Bump versionName/versionCode in app/build.gradle.kts first."
+            exit 1
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag "$TAG"
           git push origin "$TAG"
-          
+
           echo "Created and pushed tag: $TAG"
-          
-          # Trigger the actual release workflows on the new tag
+
+          # Trigger the actual release workflow on the new tag
           gh workflow run release.yml --ref "$TAG"
-          gh workflow run publish-fdroid.yml --ref "$TAG"
-          
-          echo "Successfully triggered release.yml and publish-fdroid.yml on $TAG"
+
+          echo "Successfully triggered release.yml on $TAG"

@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for KabelWacht
+description: Suggest an idea for FaceBlur
 labels: [enhancement]
 body:
   - type: textarea
@@ -21,7 +21,7 @@ body:
     id: scope
     attributes:
       label: Scope
-      description: KabelWacht intentionally stays simple and free-software-only.
+      description: FaceBlur intentionally stays simple and free-software-only.
       options:
         - label: This keeps the app free-software and F-Droid-compatible (no proprietary dependencies).
           required: true

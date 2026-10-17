@@ -1,18 +1,18 @@
 name: Bug report
-description: Report a problem with KabelWacht
+description: Report a problem with FaceBlur
 labels: [bug]
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for reporting a bug! Please do **not** report security issues here —
-        see [SECURITY.md](../blob/main/SECURITY.md).
+        use a private security advisory (see the link on the issue chooser).
   - type: input
     id: version
     attributes:
       label: App version
       description: Settings → About, or the versionName/versionCode.
-      placeholder: "2 (from F-Droid repo)"
+      placeholder: "1.0 (1)"
     validations:
       required: true
   - type: input
@@ -40,5 +40,5 @@ body:
     id: logs
     attributes:
       label: Logs (optional)
-      description: "`adb logcat` output, with any private keys redacted."
+      description: "`adb logcat -d | rg (FaceDetection)` output, with any private data redacted."
       render: shell

@@ -3,6 +3,10 @@ name: Reproducible build
 # Builds the release APK twice, from two independent checkouts in different paths,
 # and fails if the results are not byte-for-byte identical. This is the property
 # F-Droid relies on to verify that a published binary matches its source.
+#
+# Without keystore.properties the release build falls back to the debug key, and
+# both checkouts build on the same runner — so the shared ~/.android/debug.keystore
+# keeps the two APKs comparable. No NDK/CMake: inference is pure Kotlin.
 
 on:
   workflow_dispatch:
@@ -19,36 +23,31 @@ jobs:
       - name: Checkout (copy A)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          submodules: recursive
           path: a
 
       - name: Checkout (copy B)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          submodules: recursive
           path: b
 
-      - name: Set up JDK 17
+      - name: Set up JDK 25
         uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '25'
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
         with:
           # The action's default is "tools platform-tools"; Google removed the
           # obsolete "tools" package from the SDK repository, so the default makes
-          # sdkmanager exit 1. NDK and CMake are installed in the next step.
+          # sdkmanager exit 1. No NDK/CMake needed: inference is pure Kotlin.
           packages: platform-tools
-
-      - name: Install NDK and CMake
-        run: sdkmanager "ndk;27.2.12479018" "cmake;3.22.1"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
-          dependency-graph: disabled  # avoids classpath artifacts absent from verification-metadata
+          dependency-graph: disabled  # avoids classpath artifacts
           cache-read-only: true  # tag runs reuse main's cache without churning it
 
       - name: Build A
@@ -59,8 +58,8 @@ jobs:
 
       - name: Compare (must be byte-identical)
         run: |
-          A=a/app/build/outputs/apk/release/app-release-unsigned.apk
-          B=b/app/build/outputs/apk/release/app-release-unsigned.apk
+          A=a/app/build/outputs/apk/release/app-release.apk
+          B=b/app/build/outputs/apk/release/app-release.apk
           sha256sum "$A" "$B"
           if cmp -s "$A" "$B"; then
             echo "✅ Reproducible: the two builds are byte-for-byte identical."
