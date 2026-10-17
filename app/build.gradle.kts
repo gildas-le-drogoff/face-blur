@@ -62,8 +62,9 @@ android {
     }
 
     androidResources {
-        // Les bibliothèques AndroidX embarquent des dizaines de langues : seules FR/EN servent.
-        localeFilters += listOf("en", "fr")
+        // Les bibliothèques AndroidX embarquent des dizaines de langues : ne garder
+        // que les langues de l'app. EN (défaut dans values/) sert de repli.
+        localeFilters += listOf("en", "fr", "de", "it", "es")
     }
 
     // Bloc de dépendances chiffré pour Google Play : inutile, et refusé par F-Droid.

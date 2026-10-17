@@ -1,0 +1,60 @@
+<resources>
+    <string name="action_open">Abrir una foto</string>
+    <string name="action_save">Guardar</string>
+    <string name="empty_title">No hay imagen</string>
+    <string name="empty_body">Abre una foto para detectar y difuminar rostros.</string>
+    <string name="loading">Detectando rostros…</string>
+    <string name="rendering">Actualizando la vista previa…</string>
+
+    <string name="mode_select">Seleccionar</string>
+    <string name="mode_draw">Dibujar</string>
+    <string name="hint_select">Toca un rostro para excluirlo del difuminado o volver a incluirlo. Pellizca para hacer zoom.</string>
+    <string name="hint_draw">Arrastra para dibujar una zona que difuminar. Toca una zona dibujada para eliminarla. Usa dos dedos para hacer zoom.</string>
+    <string name="cd_show_overlay">Mostrar los marcadores de rostros</string>
+    <string name="cd_hide_overlay">Ocultar los marcadores de rostros</string>
+    <string name="cd_fit_screen">Ajustar la imagen a la pantalla</string>
+    <string name="cd_preview">Vista previa de la foto, zonas difuminadas: %1$d de %2$d</string>
+
+    <string name="section_detection">Detección</string>
+    <plurals name="detected_faces">
+        <item quantity="one">%d rostro detectado</item>
+        <item quantity="many">%d rostros detectados</item>
+        <item quantity="other">%d rostros detectados</item>
+    </plurals>
+    <plurals name="manual_zones">
+        <item quantity="one">%d zona dibujada</item>
+        <item quantity="many">%d zonas dibujadas</item>
+        <item quantity="other">%d zonas dibujadas</item>
+    </plurals>
+    <string name="blurred_summary">Zonas difuminadas: %1$d / %2$d</string>
+    <string name="threshold_label">Umbral de detección: %.2f</string>
+    <string name="action_blur_all">Difuminar todo</string>
+    <string name="action_blur_none">Excluir todo</string>
+
+    <string name="section_blur">Difuminado</string>
+    <string name="blur_enabled">Difuminar rostros</string>
+    <string name="blur_type">Tipo de difuminado</string>
+    <string name="blur_type_gaussian">Gaussiano</string>
+    <string name="blur_type_mosaic">Mosaico</string>
+    <string name="blur_strength">Intensidad del difuminado: %d</string>
+    <string name="tile_size">Tamaño de los mosaicos: %d%% del rostro</string>
+    <string name="blur_shape">Forma</string>
+    <string name="shape_rect">Rectángulo</string>
+    <string name="shape_oval">Óvalo</string>
+    <string name="draw_boxes">Dibujar los recuadros en la exportación</string>
+
+    <string name="section_export">Exportación</string>
+    <string name="export_format">Formato</string>
+    <string name="keep_metadata">Conservar los metadatos</string>
+    <string name="metadata_stripped_hint">Los metadatos EXIF (fecha, dispositivo, ubicación…) se eliminan.</string>
+    <string name="metadata_kept_hint">La fecha, el dispositivo y la ubicación se conservan. La miniatura incrustada y las regiones de rostros siempre se eliminan.</string>
+
+    <string name="msg_saved">Guardado: %s</string>
+    <string name="msg_saved_metadata_kept">Guardado con metadatos: %s</string>
+    <string name="msg_saved_no_metadata">Guardado: %s (el original no tenía metadatos que conservar)</string>
+    <string name="msg_saved_metadata_failed">Guardado sin metadatos (no se pudieron escribir): %s</string>
+    <string name="error_load">No se puede abrir la imagen: %s</string>
+    <string name="error_save">No se puede guardar la imagen: %s</string>
+    <string name="error_render">Error en la vista previa: %s</string>
+    <string name="error_unknown">error desconocido</string>
+</resources>

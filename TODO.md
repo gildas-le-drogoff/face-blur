@@ -1,23 +1,31 @@
 # TODO.md
 
-📋 **ETAT DU TODO.md** _(Mis à jour le 17/10/2026)_
+📋 **ETAT DU TODO.md** _(Mis à jour le 17/10/2026 16:45)_
 
 **A FAIRE (Priorité Haute)**
 
 - [ ] Tester sur appareil (Pixel 8 Pro) les gestes du canevas : toucher pour exclure, glisser pour tracer, pincer pour zoomer - Échéance : 18/10/2026 / Contexte : aucun appareil branché pendant le développement, seuls compilation, lint et tests JVM ont été validés
 - [ ] Vérifier sur appareil la conservation des métadonnées en JPEG, PNG et WebP (ExifInterface) et la présence du GPS - Échéance : 18/10/2026 / Contexte : le sélecteur de photos peut retirer la localisation (permission ACCESS_MEDIA_LOCATION non demandée)
+- [ ] Décider du sort de assets/face_detection_yunet_2026may.onnx - Échéance : 18/10/2026 / Contexte : ajouté par un autre agent, non utilisé par le code ; vérifié le 17/10 : poids et graphe strictement identiques à 2023mar, seules les dimensions d'entrée/sortie sont dynamiques et les annotations de formes retirées (3 Ko de moins). Aucun effet sur la détection ni la vitesse avec notre moteur. Recommandation : passer à 2026may (modèle par défaut d'OpenCV Zoo) et supprimer 2023mar
+- [ ] Ajouter une licence libre au projet (fichier LICENSE) avant la soumission F-Droid - Échéance : à définir / Contexte : aucune licence dans le dépôt, F-Droid l'exige
 
 **A FAIRE (Priorité Moyenne/Basse)**
 
 - [ ] Rendre la sélection des visages accessible à TalkBack (actions sémantiques par visage) - Échéance : à définir
 - [ ] Mesurer le temps de rendu du flou gaussien sur une grande zone manuelle (4096 px) et réduire l'image avant flou si besoin - Échéance : à définir
-- [ ] Mettre à jour Gradle 9.8.1 / onnxruntime 1.31.0 (signalés par lint) - Échéance : à définir
+- [ ] Mettre à jour Gradle 9.8.1 (signalé par lint ; onnxruntime n'est plus utilisé) - Échéance : à définir
+- [ ] Vérifier sur appareil les 5 langues (fr, de, it, es, en) : bascule de langue système + sélecteur « Langue de l'application » (Android 13+), repli anglais pour une langue non fournie - Échéance : à définir / Contexte : traductions ajoutées sans build possible dans l'environnement
 
 **EN COURS**
 
 - (aucune)
 
 **TERMINÉ (Dernières 24h)**
+
+- [x] Localisation : italien, allemand, espagnol ajoutés (français et anglais existants, anglais = repli via values/), localeFilters et locales_config pour le sélecteur de langue par application - Fait le 17/10/2026
+- [x] Remplacement de SCRFD (InsightFace, licence non commerciale) par YuNet 2023mar (OpenCV Zoo, MIT), exécuté par un moteur ONNX en Kotlin pur (data/onnx) : onnxruntime supprimé - Fait le 17/10/2026
+- [x] APK release 16 Mo -> 1,2 Mo (universel, sans .so natif d'inférence, dex compressé, langues FR/EN, bloc de dépendances désactivé pour F-Droid) - Fait le 17/10/2026
+- [x] Validation : sorties identiques à onnxruntime (test JVM), mêmes visages que la référence sur 4 photos (57/57 sur une photo de classe), ~155 ms d'inférence sur Pixel 8 Pro en release - Fait le 17/10/2026
 
 - [x] Choix du type de flou : gaussien (3 flous boîte) ou mosaïque - Fait le 17/10/2026
 - [x] Réglage de la taille des carreaux de mosaïque (4 à 25 % du visage) - Fait le 17/10/2026
@@ -28,4 +36,4 @@
 - [x] Export JPEG / PNG / WebP - Fait le 17/10/2026
 - [x] Architecture domain / data / ui, ViewModel (état conservé à la rotation), FaceDetectionLog, chaînes FR/EN, mise en page adaptative - Fait le 17/10/2026
 - [x] Correction du crash au lancement sous Android 10/11 (couleurs dynamiques réservées à l'API 31+) - Fait le 17/10/2026
-- [x] 25 tests JVM (effets de pixels, NMS/sélection, zoom, liste des métadonnées) - Fait le 17/10/2026
+- [x] 29 tests JVM (effets de pixels, NMS/sélection, zoom, liste des métadonnées, moteur ONNX, décodage YuNet) - Fait le 17/10/2026

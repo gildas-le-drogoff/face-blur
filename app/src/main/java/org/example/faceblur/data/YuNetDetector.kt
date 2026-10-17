@@ -6,6 +6,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import androidx.core.graphics.createBitmap
 import org.example.faceblur.FaceDetectionLog
 import org.example.faceblur.data.onnx.OnnxModel
 import org.example.faceblur.data.onnx.OnnxRunner
@@ -33,7 +34,7 @@ class YuNetDetector(context: Context) {
         val padW = (newW + ALIGN - 1) / ALIGN * ALIGN
         val padH = (newH + ALIGN - 1) / ALIGN * ALIGN
 
-        val padded = Bitmap.createBitmap(padW, padH, Bitmap.Config.ARGB_8888)
+        val padded = createBitmap(padW, padH)
         Canvas(padded).apply {
             drawColor(Color.BLACK)
             drawBitmap(bitmap, null, Rect(0, 0, newW, newH), Paint(Paint.FILTER_BITMAP_FLAG))

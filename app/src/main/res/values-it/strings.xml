@@ -1,0 +1,60 @@
+<resources>
+    <string name="action_open">Apri una foto</string>
+    <string name="action_save">Salva</string>
+    <string name="empty_title">Nessuna immagine</string>
+    <string name="empty_body">Apri una foto per rilevare e sfocare i volti.</string>
+    <string name="loading">Rilevamento dei volti…</string>
+    <string name="rendering">Aggiornamento dell\'anteprima…</string>
+
+    <string name="mode_select">Selezione</string>
+    <string name="mode_draw">Disegno</string>
+    <string name="hint_select">Tocca un volto per escluderlo dalla sfocatura o includerlo di nuovo. Pizzica per zoomare.</string>
+    <string name="hint_draw">Trascina per disegnare una zona da sfocare. Tocca una zona disegnata per eliminarla. Usa due dita per zoomare.</string>
+    <string name="cd_show_overlay">Mostra i marcatori dei volti</string>
+    <string name="cd_hide_overlay">Nascondi i marcatori dei volti</string>
+    <string name="cd_fit_screen">Adatta l\'immagine allo schermo</string>
+    <string name="cd_preview">Anteprima della foto, zone sfocate: %1$d di %2$d</string>
+
+    <string name="section_detection">Rilevamento</string>
+    <plurals name="detected_faces">
+        <item quantity="one">%d volto rilevato</item>
+        <item quantity="many">%d volti rilevati</item>
+        <item quantity="other">%d volti rilevati</item>
+    </plurals>
+    <plurals name="manual_zones">
+        <item quantity="one">%d zona disegnata</item>
+        <item quantity="many">%d zone disegnate</item>
+        <item quantity="other">%d zone disegnate</item>
+    </plurals>
+    <string name="blurred_summary">Zone sfocate: %1$d / %2$d</string>
+    <string name="threshold_label">Soglia di rilevamento: %.2f</string>
+    <string name="action_blur_all">Sfoca tutto</string>
+    <string name="action_blur_none">Escludi tutto</string>
+
+    <string name="section_blur">Sfocatura</string>
+    <string name="blur_enabled">Sfoca i volti</string>
+    <string name="blur_type">Tipo di sfocatura</string>
+    <string name="blur_type_gaussian">Gaussiana</string>
+    <string name="blur_type_mosaic">Mosaico</string>
+    <string name="blur_strength">Intensità della sfocatura: %d</string>
+    <string name="tile_size">Dimensione delle tessere: %d%% del volto</string>
+    <string name="blur_shape">Forma</string>
+    <string name="shape_rect">Rettangolo</string>
+    <string name="shape_oval">Ovale</string>
+    <string name="draw_boxes">Disegna i riquadri nell\'esportazione</string>
+
+    <string name="section_export">Esportazione</string>
+    <string name="export_format">Formato</string>
+    <string name="keep_metadata">Conserva i metadati</string>
+    <string name="metadata_stripped_hint">I metadati EXIF (data, dispositivo, posizione…) vengono rimossi.</string>
+    <string name="metadata_kept_hint">Data, dispositivo e posizione vengono conservati. La miniatura incorporata e le aree dei volti vengono sempre rimosse.</string>
+
+    <string name="msg_saved">Salvato: %s</string>
+    <string name="msg_saved_metadata_kept">Salvato con i metadati: %s</string>
+    <string name="msg_saved_no_metadata">Salvato: %s (l\'originale non aveva metadati da conservare)</string>
+    <string name="msg_saved_metadata_failed">Salvato senza metadati (impossibile scriverli): %s</string>
+    <string name="error_load">Impossibile aprire l\'immagine: %s</string>
+    <string name="error_save">Impossibile salvare l\'immagine: %s</string>
+    <string name="error_render">Anteprima non riuscita: %s</string>
+    <string name="error_unknown">errore sconosciuto</string>
+</resources>

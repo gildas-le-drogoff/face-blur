@@ -1,0 +1,58 @@
+<resources>
+    <string name="action_open">Foto öffnen</string>
+    <string name="action_save">Speichern</string>
+    <string name="empty_title">Kein Bild</string>
+    <string name="empty_body">Öffne ein Foto, um Gesichter zu erkennen und zu verwischen.</string>
+    <string name="loading">Gesichter werden erkannt…</string>
+    <string name="rendering">Vorschau wird aktualisiert…</string>
+
+    <string name="mode_select">Auswählen</string>
+    <string name="mode_draw">Zeichnen</string>
+    <string name="hint_select">Tippe auf ein Gesicht, um es vom Weichzeichnen auszunehmen oder wieder einzubeziehen. Zum Zoomen zusammenziehen.</string>
+    <string name="hint_draw">Ziehe, um einen zu verwischenden Bereich zu zeichnen. Tippe auf einen gezeichneten Bereich, um ihn zu löschen. Zum Zoomen zwei Finger verwenden.</string>
+    <string name="cd_show_overlay">Gesichtsmarkierungen anzeigen</string>
+    <string name="cd_hide_overlay">Gesichtsmarkierungen ausblenden</string>
+    <string name="cd_fit_screen">Bild an den Bildschirm anpassen</string>
+    <string name="cd_preview">Fotovorschau, weichgezeichnete Bereiche: %1$d von %2$d</string>
+
+    <string name="section_detection">Erkennung</string>
+    <plurals name="detected_faces">
+        <item quantity="one">%d Gesicht erkannt</item>
+        <item quantity="other">%d Gesichter erkannt</item>
+    </plurals>
+    <plurals name="manual_zones">
+        <item quantity="one">%d gezeichneter Bereich</item>
+        <item quantity="other">%d gezeichnete Bereiche</item>
+    </plurals>
+    <string name="blurred_summary">Weichgezeichnete Bereiche: %1$d / %2$d</string>
+    <string name="threshold_label">Erkennungsschwelle: %.2f</string>
+    <string name="action_blur_all">Alle verwischen</string>
+    <string name="action_blur_none">Alle ausschließen</string>
+
+    <string name="section_blur">Unschärfe</string>
+    <string name="blur_enabled">Gesichter weichzeichnen</string>
+    <string name="blur_type">Art der Unschärfe</string>
+    <string name="blur_type_gaussian">Gauß</string>
+    <string name="blur_type_mosaic">Mosaik</string>
+    <string name="blur_strength">Unschärfestärke: %d</string>
+    <string name="tile_size">Kachelgröße: %d%% des Gesichts</string>
+    <string name="blur_shape">Form</string>
+    <string name="shape_rect">Rechteck</string>
+    <string name="shape_oval">Oval</string>
+    <string name="draw_boxes">Rahmen beim Export zeichnen</string>
+
+    <string name="section_export">Export</string>
+    <string name="export_format">Format</string>
+    <string name="keep_metadata">Metadaten behalten</string>
+    <string name="metadata_stripped_hint">EXIF-Metadaten (Datum, Gerät, Standort…) werden entfernt.</string>
+    <string name="metadata_kept_hint">Datum, Gerät und Standort bleiben erhalten. Das eingebettete Vorschaubild und die Gesichtsbereiche werden immer entfernt.</string>
+
+    <string name="msg_saved">Gespeichert: %s</string>
+    <string name="msg_saved_metadata_kept">Mit Metadaten gespeichert: %s</string>
+    <string name="msg_saved_no_metadata">Gespeichert: %s (das Original hatte keine Metadaten)</string>
+    <string name="msg_saved_metadata_failed">Ohne Metadaten gespeichert (Schreiben nicht möglich): %s</string>
+    <string name="error_load">Bild kann nicht geöffnet werden: %s</string>
+    <string name="error_save">Bild kann nicht gespeichert werden: %s</string>
+    <string name="error_render">Vorschau fehlgeschlagen: %s</string>
+    <string name="error_unknown">unbekannter Fehler</string>
+</resources>

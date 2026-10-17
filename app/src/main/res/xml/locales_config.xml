@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Langues proposées dans Réglages système > Applications > FaceBlur > Langue.
+     values/ (anglais) est la valeur par défaut : toute autre langue du système
+     retombe dessus. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="fr" />
+    <locale android:name="de" />
+    <locale android:name="it" />
+    <locale android:name="es" />
+</locale-config>
