@@ -8,7 +8,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 class OnnxRunnerTest {
-    private val model = OnnxModel.parse(File("src/main/assets/face_detection_yunet_2023mar.onnx").readBytes())
+    private val model = OnnxModel.parse(File("src/main/assets/face_detection_yunet_2026may.onnx").readBytes())
 
     @Test
     fun `parses YuNet graph`() {

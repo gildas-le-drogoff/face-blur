@@ -6,7 +6,6 @@
 
 - [ ] Tester sur appareil (Pixel 8 Pro) les gestes du canevas : toucher pour exclure, glisser pour tracer, pincer pour zoomer - Échéance : 18/10/2026 / Contexte : aucun appareil branché pendant le développement, seuls compilation, lint et tests JVM ont été validés
 - [ ] Vérifier sur appareil la conservation des métadonnées en JPEG, PNG et WebP (ExifInterface) et la présence du GPS - Échéance : 18/10/2026 / Contexte : le sélecteur de photos peut retirer la localisation (permission ACCESS_MEDIA_LOCATION non demandée)
-- [ ] Décider du sort de assets/face_detection_yunet_2026may.onnx - Échéance : 18/10/2026 / Contexte : ajouté par un autre agent, non utilisé par le code ; vérifié le 17/10 : poids et graphe strictement identiques à 2023mar, seules les dimensions d'entrée/sortie sont dynamiques et les annotations de formes retirées (3 Ko de moins). Aucun effet sur la détection ni la vitesse avec notre moteur. Recommandation : passer à 2026may (modèle par défaut d'OpenCV Zoo) et supprimer 2023mar
 - [ ] Ajouter une licence libre au projet (fichier LICENSE) avant la soumission F-Droid - Échéance : à définir / Contexte : aucune licence dans le dépôt, F-Droid l'exige
 
 **A FAIRE (Priorité Moyenne/Basse)**
@@ -22,8 +21,9 @@
 
 **TERMINÉ (Dernières 24h)**
 
+- [x] Modèle unique face_detection_yunet_2026may.onnx (mêmes poids que 2023mar, supprimé) : APK release 1,2 Mo, 29 tests OK, 57/57 visages sur appareil - Fait le 17/10/2026
 - [x] Localisation : italien, allemand, espagnol ajoutés (français et anglais existants, anglais = repli via values/), localeFilters et locales_config pour le sélecteur de langue par application - Fait le 17/10/2026
-- [x] Remplacement de SCRFD (InsightFace, licence non commerciale) par YuNet 2023mar (OpenCV Zoo, MIT), exécuté par un moteur ONNX en Kotlin pur (data/onnx) : onnxruntime supprimé - Fait le 17/10/2026
+- [x] Remplacement de SCRFD (InsightFace, licence non commerciale) par YuNet (OpenCV Zoo, MIT), exécuté par un moteur ONNX en Kotlin pur (data/onnx) : onnxruntime supprimé - Fait le 17/10/2026
 - [x] APK release 16 Mo -> 1,2 Mo (universel, sans .so natif d'inférence, dex compressé, langues FR/EN, bloc de dépendances désactivé pour F-Droid) - Fait le 17/10/2026
 - [x] Validation : sorties identiques à onnxruntime (test JVM), mêmes visages que la référence sur 4 photos (57/57 sur une photo de classe), ~155 ms d'inférence sur Pixel 8 Pro en release - Fait le 17/10/2026
 

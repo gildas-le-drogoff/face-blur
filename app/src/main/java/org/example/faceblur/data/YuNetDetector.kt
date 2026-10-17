@@ -16,7 +16,7 @@ import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
- * Détecteur de visages YuNet (face_detection_yunet_2023mar.onnx, OpenCV Zoo, licence MIT),
+ * Détecteur de visages YuNet (face_detection_yunet_2026may.onnx, OpenCV Zoo, licence MIT),
  * exécuté par [OnnxRunner] : aucune bibliothèque native.
  */
 class YuNetDetector(context: Context) {
@@ -70,7 +70,7 @@ class YuNetDetector(context: Context) {
 
     private companion object {
         const val TAG = "Detector"
-        const val MODEL = "face_detection_yunet_2023mar.onnx"
+        const val MODEL = "face_detection_yunet_2026may.onnx"
         const val INPUT = 640
         const val ALIGN = 32
     }
