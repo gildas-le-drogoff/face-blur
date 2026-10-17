@@ -93,6 +93,6 @@ class PixelEffectsTest {
         )
         assertEquals(20, PixelEffects.mosaicTile(200f, 10))
         assertEquals(2, PixelEffects.mosaicTile(5f, MIN_TILE_PERCENT))
-        assertEquals(50, PixelEffects.mosaicTile(200f, 99))
+        assertEquals(100, PixelEffects.mosaicTile(200f, 99))
     }
 }

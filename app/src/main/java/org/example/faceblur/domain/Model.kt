@@ -59,14 +59,15 @@ const val MAX_BLUR_STRENGTH = 10
 const val DEFAULT_BLUR_STRENGTH = 6
 
 /** Taille d'un carreau de mosaïque, en % du plus petit côté du visage. */
-const val MIN_TILE_PERCENT = 4
-const val MAX_TILE_PERCENT = 25
-const val DEFAULT_TILE_PERCENT = 10
+const val MIN_TILE_PERCENT = 5
+const val MAX_TILE_PERCENT = 50
+const val TILE_PERCENT_STEP = 5
+const val DEFAULT_TILE_PERCENT = 25
 
 data class BlurSettings(
     val enabled: Boolean = true,
-    val type: BlurType = BlurType.GAUSSIAN,
-    val shape: BlurShape = BlurShape.RECT,
+    val type: BlurType = BlurType.MOSAIC,
+    val shape: BlurShape = BlurShape.OVAL,
     val strength: Int = DEFAULT_BLUR_STRENGTH,
     val tilePercent: Int = DEFAULT_TILE_PERCENT,
 )

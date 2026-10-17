@@ -63,6 +63,7 @@ import org.example.faceblur.domain.MAX_BLUR_STRENGTH
 import org.example.faceblur.domain.MAX_TILE_PERCENT
 import org.example.faceblur.domain.MIN_BLUR_STRENGTH
 import org.example.faceblur.domain.MIN_TILE_PERCENT
+import org.example.faceblur.domain.TILE_PERCENT_STEP
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -340,7 +341,7 @@ private fun ControlsPanel(state: FaceBlurUiState, viewModel: FaceBlurViewModel, 
                     BlurType.MOSAIC -> IntSlider(
                         label = stringResource(R.string.tile_size, state.blur.tilePercent),
                         value = state.blur.tilePercent,
-                        range = MIN_TILE_PERCENT..MAX_TILE_PERCENT,
+                        range = MIN_TILE_PERCENT..MAX_TILE_PERCENT step TILE_PERCENT_STEP,
                         onValueChange = viewModel::setTilePercent,
                         enabled = enabled,
                     )
@@ -468,14 +469,14 @@ private fun LabeledSlider(
 }
 
 @Composable
-private fun IntSlider(label: String, value: Int, range: IntRange, onValueChange: (Int) -> Unit, enabled: Boolean) {
+private fun IntSlider(label: String, value: Int, range: IntProgression, onValueChange: (Int) -> Unit, enabled: Boolean) {
     LabeledSlider(
         label = label,
         value = value.toFloat(),
         onValueChange = { onValueChange(it.roundToInt()) },
         range = range.first.toFloat()..range.last.toFloat(),
         enabled = enabled,
-        steps = range.last - range.first - 1,
+        steps = (range.last - range.first) / range.step - 1,
     )
 }
 
