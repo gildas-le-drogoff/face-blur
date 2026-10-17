@@ -56,6 +56,11 @@ android {
     androidResources {
         noCompress += "onnx"
     }
+
+    testOptions {
+        // Les tests JVM purs ne doivent pas planter si un appel android.* s'y glisse.
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -64,5 +69,11 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.exifinterface)
     implementation(libs.onnxruntime.android)
+
+    testImplementation(libs.junit)
 }

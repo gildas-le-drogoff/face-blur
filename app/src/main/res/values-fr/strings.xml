@@ -1,0 +1,60 @@
+<resources>
+    <string name="action_open">Ouvrir une photo</string>
+    <string name="action_save">Enregistrer</string>
+    <string name="empty_title">Aucune image</string>
+    <string name="empty_body">Ouvrez une photo pour détecter et flouter les visages.</string>
+    <string name="loading">Détection des visages…</string>
+    <string name="rendering">Mise à jour de l\'aperçu…</string>
+
+    <string name="mode_select">Sélection</string>
+    <string name="mode_draw">Tracer</string>
+    <string name="hint_select">Touchez un visage pour l\'exclure du floutage ou l\'y inclure à nouveau. Pincez pour zoomer.</string>
+    <string name="hint_draw">Glissez pour tracer une zone à flouter. Touchez une zone tracée pour la supprimer. Deux doigts pour zoomer.</string>
+    <string name="cd_show_overlay">Afficher les repères des visages</string>
+    <string name="cd_hide_overlay">Masquer les repères des visages</string>
+    <string name="cd_fit_screen">Ajuster l\'image à l\'écran</string>
+    <string name="cd_preview">Aperçu de la photo, zones floutées : %1$d sur %2$d</string>
+
+    <string name="section_detection">Détection</string>
+    <plurals name="detected_faces">
+        <item quantity="one">%d visage détecté</item>
+        <item quantity="many">%d visages détectés</item>
+        <item quantity="other">%d visages détectés</item>
+    </plurals>
+    <plurals name="manual_zones">
+        <item quantity="one">%d zone tracée</item>
+        <item quantity="many">%d zones tracées</item>
+        <item quantity="other">%d zones tracées</item>
+    </plurals>
+    <string name="blurred_summary">Zones floutées : %1$d / %2$d</string>
+    <string name="threshold_label">Seuil de détection : %.2f</string>
+    <string name="action_blur_all">Tout flouter</string>
+    <string name="action_blur_none">Tout exclure</string>
+
+    <string name="section_blur">Floutage</string>
+    <string name="blur_enabled">Flouter les visages</string>
+    <string name="blur_type">Type de flou</string>
+    <string name="blur_type_gaussian">Gaussien</string>
+    <string name="blur_type_mosaic">Mosaïque</string>
+    <string name="blur_strength">Force du flou : %d</string>
+    <string name="tile_size">Taille des carreaux : %d %% du visage</string>
+    <string name="blur_shape">Forme</string>
+    <string name="shape_rect">Rectangle</string>
+    <string name="shape_oval">Ovale</string>
+    <string name="draw_boxes">Dessiner les cadres dans l\'export</string>
+
+    <string name="section_export">Export</string>
+    <string name="export_format">Format</string>
+    <string name="keep_metadata">Conserver les métadonnées</string>
+    <string name="metadata_stripped_hint">Les métadonnées EXIF (date, appareil, localisation…) sont supprimées.</string>
+    <string name="metadata_kept_hint">Date, appareil et localisation sont conservés. La vignette intégrée et les régions de visages sont toujours retirées.</string>
+
+    <string name="msg_saved">Enregistré : %s</string>
+    <string name="msg_saved_metadata_kept">Enregistré avec les métadonnées : %s</string>
+    <string name="msg_saved_no_metadata">Enregistré : %s (l\'original n\'avait aucune métadonnée à conserver)</string>
+    <string name="msg_saved_metadata_failed">Enregistré sans métadonnées (écriture impossible) : %s</string>
+    <string name="error_load">Impossible d\'ouvrir l\'image : %s</string>
+    <string name="error_save">Impossible d\'enregistrer l\'image : %s</string>
+    <string name="error_render">Échec de l\'aperçu : %s</string>
+    <string name="error_unknown">erreur inconnue</string>
+</resources>

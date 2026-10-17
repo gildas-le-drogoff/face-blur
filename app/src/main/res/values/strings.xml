@@ -1,3 +1,63 @@
 <resources>
-    <string name="app_name">FaceBlur</string>
+    <string name="app_name" translatable="false">FaceBlur</string>
+
+    <string name="action_open">Open a photo</string>
+    <string name="action_save">Save</string>
+    <string name="empty_title">No image</string>
+    <string name="empty_body">Open a photo to detect and blur faces.</string>
+    <string name="loading">Detecting faces…</string>
+    <string name="rendering">Updating preview…</string>
+
+    <string name="mode_select">Select</string>
+    <string name="mode_draw">Draw</string>
+    <string name="hint_select">Tap a face to exclude it from the blur or include it again. Pinch to zoom.</string>
+    <string name="hint_draw">Drag to draw a zone to blur. Tap a drawn zone to delete it. Use two fingers to zoom.</string>
+    <string name="cd_show_overlay">Show face markers</string>
+    <string name="cd_hide_overlay">Hide face markers</string>
+    <string name="cd_fit_screen">Fit the image to the screen</string>
+    <string name="cd_preview">Photo preview, blurred zones: %1$d of %2$d</string>
+
+    <string name="section_detection">Detection</string>
+    <plurals name="detected_faces">
+        <item quantity="one">%d face detected</item>
+        <item quantity="other">%d faces detected</item>
+    </plurals>
+    <plurals name="manual_zones">
+        <item quantity="one">%d drawn zone</item>
+        <item quantity="other">%d drawn zones</item>
+    </plurals>
+    <string name="blurred_summary">Blurred zones: %1$d / %2$d</string>
+    <string name="threshold_label">Detection threshold: %.2f</string>
+    <string name="action_blur_all">Blur all</string>
+    <string name="action_blur_none">Exclude all</string>
+
+    <string name="section_blur">Blur</string>
+    <string name="blur_enabled">Blur faces</string>
+    <string name="blur_type">Blur type</string>
+    <string name="blur_type_gaussian">Gaussian</string>
+    <string name="blur_type_mosaic">Mosaic</string>
+    <string name="blur_strength">Blur strength: %d</string>
+    <string name="tile_size">Tile size: %d%% of the face</string>
+    <string name="blur_shape">Shape</string>
+    <string name="shape_rect">Rectangle</string>
+    <string name="shape_oval">Oval</string>
+    <string name="draw_boxes">Draw boxes in the export</string>
+
+    <string name="section_export">Export</string>
+    <string name="export_format">Format</string>
+    <string name="format_jpeg" translatable="false">JPEG</string>
+    <string name="format_png" translatable="false">PNG</string>
+    <string name="format_webp" translatable="false">WebP</string>
+    <string name="keep_metadata">Keep metadata</string>
+    <string name="metadata_stripped_hint">EXIF metadata (date, device, location…) is removed.</string>
+    <string name="metadata_kept_hint">Date, device and location are kept. The embedded thumbnail and face regions are always removed.</string>
+
+    <string name="msg_saved">Saved: %s</string>
+    <string name="msg_saved_metadata_kept">Saved with metadata: %s</string>
+    <string name="msg_saved_no_metadata">Saved: %s (the original had no metadata to keep)</string>
+    <string name="msg_saved_metadata_failed">Saved without metadata (could not be written): %s</string>
+    <string name="error_load">Cannot open the image: %s</string>
+    <string name="error_save">Cannot save the image: %s</string>
+    <string name="error_render">Preview failed: %s</string>
+    <string name="error_unknown">unknown error</string>
 </resources>
