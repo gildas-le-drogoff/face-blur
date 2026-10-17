@@ -1,7 +1,9 @@
 package org.example.faceblur.data
 
+import android.Manifest
 import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -14,9 +16,10 @@ import org.example.faceblur.domain.ExportFormat
 import org.example.faceblur.domain.ExportOptions
 import org.example.faceblur.domain.exportFileName
 import java.io.File
+import java.io.InputStream
 
 /** Image ouverte : pixels redressés et métadonnées lues à l'ouverture (l'URI du sélecteur peut expirer). */
-class SourceImage(val name: String, val bitmap: Bitmap, val metadata: Map<String, String>)
+class SourceImage(val name: String, val bitmap: Bitmap, val metadata: PhotoMetadata)
 
 enum class MetadataOutcome { STRIPPED, KEPT, NONE_AVAILABLE, FAILED }
 
@@ -30,13 +33,30 @@ class ImageRepository(private val context: Context) {
         val bitmap = FaceDetectionLog.timed(TAG, "Decoding image", { "${it.width}x${it.height}" }) { decode(uri) }
         FaceDetectionLog.heap(TAG, "After decode")
         val metadata = try {
-            context.contentResolver.openInputStream(uri)?.use(ExifMetadata::read).orEmpty()
+            openOriginal(uri)?.use(ExifMetadata::read) ?: PhotoMetadata.NONE
         } catch (e: Exception) {
             FaceDetectionLog.w(TAG, e) { "Unreadable metadata, ignored" }
-            emptyMap()
+            PhotoMetadata.NONE
         }
-        FaceDetectionLog.d(TAG) { "${metadata.size} metadata tags readable" }
+        FaceDetectionLog.d(TAG) { "${metadata.exif.size} EXIF tags readable, XMP ${metadata.xmp?.length ?: 0} chars" }
+        FaceDetectionLog.d(TAG) { "DEBUGTMP ${metadata.exif}" }
         return SourceImage(displayName(uri), bitmap, metadata)
+    }
+
+    /**
+     * Sans ACCESS_MEDIA_LOCATION, Android remet à zéro la position GPS des fichiers lus.
+     * Avec, il faut encore demander explicitement l'original non expurgé.
+     */
+    private fun openOriginal(uri: Uri): InputStream? {
+        val resolver = context.contentResolver
+        if (context.checkSelfPermission(Manifest.permission.ACCESS_MEDIA_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            try {
+                return resolver.openInputStream(MediaStore.setRequireOriginal(uri))
+            } catch (e: Exception) {
+                FaceDetectionLog.w(TAG, e) { "Original unavailable, location may be redacted" }
+            }
+        }
+        return resolver.openInputStream(uri)
     }
 
     /** Décode l'image (orientation EXIF appliquée par ImageDecoder), plafonnée à MAX_SIDE px. */
@@ -75,7 +95,7 @@ class ImageRepository(private val context: Context) {
             }
             val metadata = when {
                 !options.keepMetadata -> MetadataOutcome.STRIPPED
-                source.metadata.isEmpty() -> MetadataOutcome.NONE_AVAILABLE
+                source.metadata.isEmpty -> MetadataOutcome.NONE_AVAILABLE
                 else -> try {
                     ExifMetadata.write(tmp, source.metadata, bitmap.width, bitmap.height)
                     MetadataOutcome.KEPT

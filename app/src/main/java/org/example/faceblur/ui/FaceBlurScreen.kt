@@ -92,10 +92,10 @@ fun FaceBlurScreen(viewModel: FaceBlurViewModel) {
     // Retour système : referme les crédits avant de quitter l'application.
     BackHandler(enabled = destination == Destination.Credits) { destination = Destination.Editor }
 
-    val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) viewModel.open(uri)
     }
-    val openPicker = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
+    val openPicker = { picker.launch(arrayOf("image/*")) }
 
     LaunchedEffect(state.message, destination) {
         val message = state.message ?: return@LaunchedEffect
