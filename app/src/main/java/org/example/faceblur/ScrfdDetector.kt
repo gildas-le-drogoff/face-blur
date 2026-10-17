@@ -5,13 +5,17 @@ import ai.onnxruntime.OrtEnvironment
 import ai.onnxruntime.OrtSession
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapShader
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.RectF
+import android.graphics.Shader
 import java.nio.FloatBuffer
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.math.roundToInt
 
 data class Face(val box: RectF, val score: Float, val kps: List<Pair<Float, Float>>)
@@ -122,28 +126,57 @@ class ScrfdDetector(context: Context) : AutoCloseable {
     }
 }
 
-/** Floute chaque visage (zone élargie de 15 %) par sous-échantillonnage + suréchantillonnage filtré. */
-fun blurFaces(src: Bitmap, faces: List<Face>): Bitmap {
+enum class BlurShape { RECT, OVAL }
+
+const val MIN_BLUR_STRENGTH = 1
+const val MAX_BLUR_STRENGTH = 10
+const val DEFAULT_BLUR_STRENGTH = 6
+
+/**
+ * Floute chaque visage par sous-échantillonnage + suréchantillonnage filtré.
+ * [strength] (1..10) fixe le facteur de réduction total : 2^(strength/2 + 1), soit 16 pour 6 (ancien réglage).
+ * Zone élargie de 15 % par côté en rectangle, 21 % ((√2 − 1)/2) en ovale pour que l'ellipse englobe toute la bbox.
+ */
+fun blurFaces(src: Bitmap, faces: List<Face>, strength: Int, shape: BlurShape): Bitmap {
     val out = src.copy(Bitmap.Config.ARGB_8888, true)
     val canvas = Canvas(out)
-    val paint = Paint(Paint.FILTER_BITMAP_FLAG)
+    val totalFactor = 2.0.pow(strength / 2.0 + 1).toFloat()
+    val pad = if (shape == BlurShape.OVAL) 0.21f else 0.15f
     for (f in faces) {
-        val padX = f.box.width() * 0.15f
-        val padY = f.box.height() * 0.15f
-        val l = (f.box.left - padX).roundToInt().coerceIn(0, out.width - 1)
-        val t = (f.box.top - padY).roundToInt().coerceIn(0, out.height - 1)
-        val r = (f.box.right + padX).roundToInt().coerceIn(l + 1, out.width)
-        val b = (f.box.bottom + padY).roundToInt().coerceIn(t + 1, out.height)
+        val zone = RectF(
+            f.box.left - f.box.width() * pad,
+            f.box.top - f.box.height() * pad,
+            f.box.right + f.box.width() * pad,
+            f.box.bottom + f.box.height() * pad,
+        )
+        val l = zone.left.roundToInt().coerceIn(0, out.width - 1)
+        val t = zone.top.roundToInt().coerceIn(0, out.height - 1)
+        val r = zone.right.roundToInt().coerceIn(l + 1, out.width)
+        val b = zone.bottom.roundToInt().coerceIn(t + 1, out.height)
         val w = r - l
         val h = b - t
         val region = Bitmap.createBitmap(out, l, t, w, h)
-        // Deux passes de réduction pour un flou plus doux qu'une simple pixellisation.
+        // Réduction par passes de ×4 au plus, pour un flou plus doux qu'une simple pixellisation.
+        val targetW = max(1, (w / totalFactor).roundToInt())
+        val targetH = max(1, (h / totalFactor).roundToInt())
         var small = region
-        for (factor in intArrayOf(4, 4)) {
-            small = Bitmap.createScaledBitmap(small, max(1, small.width / factor), max(1, small.height / factor), true)
+        while (small.width > targetW || small.height > targetH) {
+            small = Bitmap.createScaledBitmap(
+                small, max(targetW, small.width / 4), max(targetH, small.height / 4), true,
+            )
         }
         val blurred = Bitmap.createScaledBitmap(small, w, h, true)
-        canvas.drawBitmap(blurred, l.toFloat(), t.toFloat(), paint)
+        when (shape) {
+            BlurShape.RECT ->
+                canvas.drawBitmap(blurred, l.toFloat(), t.toFloat(), Paint(Paint.FILTER_BITMAP_FLAG))
+            BlurShape.OVAL -> {
+                // Ellipse sur la zone non rognée : le shader CLAMP prolonge les bords hors de l'image.
+                val shader = BitmapShader(blurred, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP).apply {
+                    setLocalMatrix(Matrix().apply { setTranslate(l.toFloat(), t.toFloat()) })
+                }
+                canvas.drawOval(zone, Paint(Paint.ANTI_ALIAS_FLAG).apply { this.shader = shader })
+            }
+        }
     }
     return out
 }
@@ -170,8 +203,15 @@ fun drawFaces(src: Bitmap, faces: List<Face>): Bitmap {
 }
 
 /** Image finale : floutée et/ou avec bbox, selon les options. */
-fun render(src: Bitmap, faces: List<Face>, blur: Boolean, boxes: Boolean): Bitmap {
-    var out = if (blur) blurFaces(src, faces) else src
+fun render(
+    src: Bitmap,
+    faces: List<Face>,
+    blur: Boolean,
+    boxes: Boolean,
+    strength: Int = DEFAULT_BLUR_STRENGTH,
+    shape: BlurShape = BlurShape.RECT,
+): Bitmap {
+    var out = if (blur) blurFaces(src, faces, strength, shape) else src
     if (boxes) out = drawFaces(out, faces)
     return out
 }

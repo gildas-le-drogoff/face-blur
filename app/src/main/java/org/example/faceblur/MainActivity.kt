@@ -28,6 +28,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -36,6 +37,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,15 +78,17 @@ private fun FaceBlurScreen() {
     var threshold by remember { mutableFloatStateOf(0.5f) }
     var blur by remember { mutableStateOf(true) }
     var boxes by remember { mutableStateOf(false) }
+    var strength by remember { mutableIntStateOf(DEFAULT_BLUR_STRENGTH) }
+    var shape by remember { mutableStateOf(BlurShape.RECT) }
 
     val faces = remember(loaded, threshold) {
         loaded?.let { ScrfdDetector.nms(it.candidates, threshold) }.orEmpty()
     }
     // L'aperçu est exactement l'image qui sera enregistrée.
-    val preview by produceState<Bitmap?>(null, loaded, faces, blur, boxes) {
+    val preview by produceState<Bitmap?>(null, loaded, faces, blur, boxes, strength, shape) {
         val img = loaded
         value = if (img == null) null else withContext(Dispatchers.Default) {
-            render(img.bitmap, faces, blur, boxes)
+            render(img.bitmap, faces, blur, boxes, strength, shape)
         }
     }
 
@@ -137,6 +142,26 @@ private fun FaceBlurScreen() {
                 Text("Dessiner les bbox")
             }
 
+            if (blur) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Force du flou : $strength")
+                    Slider(
+                        value = strength.toFloat(),
+                        onValueChange = { strength = it.roundToInt() },
+                        valueRange = MIN_BLUR_STRENGTH.toFloat()..MAX_BLUR_STRENGTH.toFloat(),
+                        steps = MAX_BLUR_STRENGTH - MIN_BLUR_STRENGTH - 1,
+                        modifier = Modifier.weight(1f).padding(start = 8.dp),
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text("Forme :")
+                    RadioButton(shape == BlurShape.RECT, { shape = BlurShape.RECT })
+                    Text("Rectangle")
+                    RadioButton(shape == BlurShape.OVAL, { shape = BlurShape.OVAL })
+                    Text("Ovale")
+                }
+            }
+
             Button(
                 onClick = {
                     val img = loaded ?: return@Button
@@ -145,7 +170,11 @@ private fun FaceBlurScreen() {
                         try {
                             val suffix = listOfNotNull("blur".takeIf { blur }, "bbox".takeIf { boxes }).joinToString("_")
                             val saved = withContext(Dispatchers.IO) {
-                                saveImage(context, render(img.bitmap, faces, blur, boxes), "${img.name}_$suffix")
+                                saveImage(
+                                    context,
+                                    render(img.bitmap, faces, blur, boxes, strength, shape),
+                                    "${img.name}_$suffix",
+                                )
                             }
                             toast(context, "Enregistré : $saved")
                         } catch (e: Exception) {
