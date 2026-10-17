@@ -1,0 +1,34 @@
+Categories:
+  - Graphics
+  - Security
+  - Multimedia
+License: AGPL-3.0-or-later
+AuthorName: Gildas Le Drogoff
+SourceCode: https://github.com/gildas-le-drogoff/face-blur
+IssueTracker: https://github.com/gildas-le-drogoff/face-blur/issues
+
+AutoName: FaceBlur
+
+RepoType: git
+Repo: https://github.com/gildas-le-drogoff/face-blur.git
+Binaries: https://github.com/gildas-le-drogoff/face-blur/releases/download/v%c/faceblur-%c.apk
+
+Builds:
+  - versionName: "1.0"
+    versionCode: 1
+    commit: v1.0
+    subdir: app
+    sudo:
+      - apt-get update
+      - apt-get install -y -t trixie openjdk-21-jdk-headless
+      - update-alternatives --auto java
+    gradle:
+      - yes
+
+AllowedAPKSigningKeys: ad361b2890ee182a5a747b11940875f347e2ec722ad703ef23c69892ef7b7a1c
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: '|v(\d+)||v(\d+)'
+CurrentVersion: "1.0"
+CurrentVersionCode: 1

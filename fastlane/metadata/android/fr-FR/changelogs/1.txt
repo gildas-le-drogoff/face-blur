@@ -1,0 +1,1 @@
+Première version publique : détection et floutage des visages sur l'appareil (gaussien ou mosaïque), zones manuelles, zoom et déplacement, export JPEG/PNG/WebP, métadonnées optionnelles, disponible en cinq langues.

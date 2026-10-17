@@ -1,0 +1,78 @@
+name: Reproducible build
+
+# Builds the release APK twice, from two independent checkouts in different paths,
+# and fails if the results are not byte-for-byte identical. This is the property
+# F-Droid relies on to verify that a published binary matches its source.
+#
+# Without keystore.properties both checkouts build unsigned APKs (no debug-key
+# fallback), so no state outside the checkout influences the signature. No
+# NDK/CMake: inference is pure Kotlin; the only bundled .so
+# (libandroidx.graphics.path.so, via Compose) is kept unstripped so its bytes
+# do not depend on an installed NDK.
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (copy A)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: a
+
+      - name: Checkout (copy B)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: b
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@be39fa834029ff78f1a44aa3bb0819b8fc2bd8fd # v4.0.4
+        with:
+          # The action's default is "tools platform-tools"; Google removed the
+          # obsolete "tools" package from the SDK repository, so the default makes
+          # sdkmanager exit 1. No NDK/CMake needed: inference is pure Kotlin.
+          packages: platform-tools
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          dependency-graph: disabled  # avoids classpath artifacts
+          cache-read-only: true  # tag runs reuse main's cache without churning it
+
+      - name: Build A
+        run: ./a/gradlew -p a clean :app:assembleRelease --stacktrace
+
+      - name: Check A is unsigned
+        run: ./a/tools/check-apk-unsigned.sh a/app/build/outputs/apk/release/app-release*.apk
+
+      - name: Build B
+        run: ./b/gradlew -p b clean :app:assembleRelease --stacktrace
+
+      - name: Check B is unsigned
+        run: ./a/tools/check-apk-unsigned.sh b/app/build/outputs/apk/release/app-release*.apk
+
+      - name: Compare (must be byte-identical)
+        run: |
+          A="$(echo a/app/build/outputs/apk/release/app-release*.apk)"
+          B="$(echo b/app/build/outputs/apk/release/app-release*.apk)"
+          sha256sum "$A" "$B"
+          if cmp -s "$A" "$B"; then
+            echo "✅ Reproducible: the two builds are byte-for-byte identical."
+          else
+            echo "::error::Build is not reproducible — the two APKs differ."
+            cmp "$A" "$B" || true
+            exit 1
+          fi

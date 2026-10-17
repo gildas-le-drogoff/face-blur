@@ -1,0 +1,13 @@
+FaceBlur détecte et floute les visages de vos photos avant de les partager. Tout se passe sur votre appareil : aucun accès réseau, aucun traçage, aucune photo ne quitte votre téléphone.
+
+• Détection des visages sur l'appareil (modèle YuNet)
+• Flou gaussien ou mosaïque, force et taille des carreaux réglables
+• Touchez un visage pour l'exclure ou le restaurer ; tracez des zones supplémentaires à la main
+• Zoomez et déplacez l'image pour vérifier chaque détail
+• Export en JPEG, PNG ou WebP
+• Métadonnées supprimées par défaut ; conservation optionnelle de la date, de l'appareil et du titre
+• Hors ligne, en français, anglais, allemand, italien et espagnol
+
+Le modèle de détection est YuNet, issu de l'OpenCV Zoo (licence MIT), embarqué dans l'application et vérifié par somme de contrôle ; son texte intégral est disponible dans l'écran Crédits et licences.
+
+FaceBlur est un logiciel libre sous GNU Affero General Public License v3.0 ou ultérieure. Code source : https://github.com/gildas-le-drogoff/face-blur

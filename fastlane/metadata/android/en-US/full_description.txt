@@ -1,0 +1,13 @@
+FaceBlur detects and blurs the faces in your photos before you share them. Everything happens on your device: no network access, no tracking, no photo ever leaves your phone.
+
+• Automatic on-device face detection (YuNet model)
+• Gaussian blur or mosaic, with adjustable strength and tile size
+• Tap to exclude or restore individual faces; draw extra zones manually
+• Zoom and pan to check every detail
+• Export as JPEG, PNG or WebP
+• Metadata removed by default; optional keeping of date, device and title
+• Offline, in French, English, German, Italian and Spanish
+
+The face detection model is YuNet from the OpenCV Zoo (MIT licence), embedded in the app and verified by checksum; its full text is available in the app's credits screen.
+
+FaceBlur is free software under the GNU Affero General Public License v3.0 or later. Source code: https://github.com/gildas-le-drogoff/face-blur
