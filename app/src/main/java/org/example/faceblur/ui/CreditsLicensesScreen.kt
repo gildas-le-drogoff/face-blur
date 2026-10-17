@@ -43,7 +43,7 @@ private const val TAG = "Credits"
 /** Licence du modèle embarqué dans les assets (voir YuNetDetector.MODEL). */
 private const val YUNET_LICENSE_ASSET = "face_detection_yunet_2026may.LICENSE.txt"
 
-/** Crédits et licences : application, modèle de détection, bibliothèques. */
+/** Crédits et licences : développeur, application, modèle de détection, bibliothèques. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreditsLicensesScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
@@ -99,6 +99,35 @@ fun CreditsLicensesScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+
+            CreditsSection(R.string.credits_section_developer) {
+                OutlinedCard(Modifier.fillMaxWidth()) {
+                    val dimens = LocalDimens.current
+                    Row(
+                        Modifier.padding(dimens.spacing),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(dimens.spacing),
+                    ) {
+                        // Décoratif : le nom du développeur est le texte voisin.
+                        Icon(
+                            painterResource(R.drawable.ic_person),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                        Column {
+                            Text(
+                                stringResource(R.string.credits_developer_name),
+                                style = MaterialTheme.typography.titleMedium,
+                            )
+                            Text(
+                                stringResource(R.string.credits_developer_subtitle),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                }
+            }
 
             CreditsSection(R.string.credits_section_detection) {
                 LicenseCard(

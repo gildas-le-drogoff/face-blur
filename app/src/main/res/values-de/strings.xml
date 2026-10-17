@@ -58,6 +58,8 @@
     <string name="cd_back">Zurück</string>
     <string name="credits_version">Version %s</string>
     <string name="credits_app_tagline">Verwischen Sie die Gesichter auf Ihren Fotos. Alles geschieht auf Ihrem Gerät, ohne Netzwerk.</string>
+    <string name="credits_section_developer">Entwickler</string>
+    <string name="credits_developer_subtitle">Design und Entwicklung</string>
     <string name="credits_section_detection">Gesichtserkennung</string>
     <string name="credits_section_libraries">Bibliotheken</string>
     <string name="credits_yunet_subtitle">Gesichtserkennungsmodell (OpenCV Zoo)</string>

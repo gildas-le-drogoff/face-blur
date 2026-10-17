@@ -1,6 +1,6 @@
 # TODO.md
 
-📋 **ETAT DU TODO.md** _(Mis à jour le 17/10/2026 17h30)_
+📋 **ETAT DU TODO.md** _(Mis à jour le 17/10/2026 17h40)_
 
 **A FAIRE (Priorité Haute)**
 
@@ -27,6 +27,7 @@
 
 **TERMINÉ (Dernières 24h)**
 
+- [x] Écran Crédits : section « Développeur » en tête avec Gildas Le Drogoff (carte ic_person + nom + « Conception et développement », traduite dans les 5 langues) - Fait le 17/10/2026
 - [x] Adaptation du .github (copié du projet KabelWacht) à FaceBlur : suppression de publish-fdroid/bootstrap-signing/transparency-monitor (infra absente : scripts/, fdroid/, fastlane/), CI/Release/Reproducible nettoyés (plus de submodules WireGuard, NDK/CMake, tunnelAbis ; JDK 25 = toolchain du daemon Gradle), version lue depuis versionName (tag v1.0), APK signé via secrets avec repli debug, templates renommés FaceBlur, dependabot/reuse conservés - Fait le 17/10/2026
 - [x] app/build.gradle.kts : la buildType release utilise désormais la signingConfig « release » quand keystore.properties existe (repli debug sinon) - Fait le 17/10/2026 / Contexte : indispensable pour que la signature CI via secrets produise un APK réellement signé avec la clé d'upload
 - [x] Retour système : un premier retour dézoome, puis confirmation avant de quitter si le rendu courant n'a pas été enregistré (signature des zones floutées + réglages, remise à jour après enregistrement) - Fait le 17/10/2026

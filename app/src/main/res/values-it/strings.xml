@@ -60,6 +60,8 @@
     <string name="cd_back">Indietro</string>
     <string name="credits_version">Versione %s</string>
     <string name="credits_app_tagline">Sfoca i volti nelle tue foto. Tutto avviene sul tuo dispositivo, senza rete.</string>
+    <string name="credits_section_developer">Sviluppatore</string>
+    <string name="credits_developer_subtitle">Progettazione e sviluppo</string>
     <string name="credits_section_detection">Rilevamento dei volti</string>
     <string name="credits_section_libraries">Librerie</string>
     <string name="credits_yunet_subtitle">Modello di rilevamento dei volti (OpenCV Zoo)</string>

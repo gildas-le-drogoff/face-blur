@@ -60,6 +60,8 @@
     <string name="cd_back">Retour</string>
     <string name="credits_version">Version %s</string>
     <string name="credits_app_tagline">Floutez les visages de vos photos. Tout se passe sur votre appareil, sans réseau.</string>
+    <string name="credits_section_developer">Développeur</string>
+    <string name="credits_developer_subtitle">Conception et développement</string>
     <string name="credits_section_detection">Détection des visages</string>
     <string name="credits_section_libraries">Bibliothèques</string>
     <string name="credits_yunet_subtitle">Modèle de détection des visages (OpenCV Zoo)</string>

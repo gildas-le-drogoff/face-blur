@@ -63,6 +63,9 @@
     <string name="cd_back">Back</string>
     <string name="credits_version">Version %s</string>
     <string name="credits_app_tagline">Blur the faces in your photos. Everything happens on your device, without a network.</string>
+    <string name="credits_section_developer">Developer</string>
+    <string name="credits_developer_name" translatable="false">Gildas Le Drogoff</string>
+    <string name="credits_developer_subtitle">Design and development</string>
     <string name="credits_section_detection">Face detection</string>
     <string name="credits_section_libraries">Libraries</string>
     <string name="credits_yunet_name" translatable="false">YuNet</string>

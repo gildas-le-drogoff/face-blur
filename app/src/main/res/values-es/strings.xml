@@ -60,6 +60,8 @@
     <string name="cd_back">Atrás</string>
     <string name="credits_version">Versión %s</string>
     <string name="credits_app_tagline">Difumina los rostros de tus fotos. Todo ocurre en tu dispositivo, sin conexión.</string>
+    <string name="credits_section_developer">Desarrollador</string>
+    <string name="credits_developer_subtitle">Diseño y desarrollo</string>
     <string name="credits_section_detection">Detección de rostros</string>
     <string name="credits_section_libraries">Bibliotecas</string>
     <string name="credits_yunet_subtitle">Modelo de detección de rostros (OpenCV Zoo)</string>
