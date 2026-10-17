@@ -54,4 +54,20 @@
     <string name="error_save">No se puede guardar la imagen: %s</string>
     <string name="error_render">Error en la vista previa: %s</string>
     <string name="error_unknown">error desconocido</string>
+
+    <string name="credits_title">Créditos y licencias</string>
+    <string name="cd_credits">Créditos y licencias</string>
+    <string name="cd_back">Atrás</string>
+    <string name="credits_version">Versión %s</string>
+    <string name="credits_app_tagline">Difumina los rostros de tus fotos. Todo ocurre en tu dispositivo, sin conexión.</string>
+    <string name="credits_section_detection">Detección de rostros</string>
+    <string name="credits_section_libraries">Bibliotecas</string>
+    <string name="credits_yunet_subtitle">Modelo de detección de rostros (OpenCV Zoo)</string>
+    <string name="credits_kotlin_subtitle">Lenguaje de programación</string>
+    <string name="credits_androidx_subtitle">Bibliotecas de la interfaz (Compose, Material 3, Activity, Lifecycle, Window, ExifInterface)</string>
+
+    <string name="discard_title">¿Salir sin guardar?</string>
+    <string name="discard_body">Se perderán las zonas difuminadas y los ajustes de esta foto.</string>
+    <string name="action_discard">Salir</string>
+    <string name="action_cancel">Cancelar</string>
 </resources>

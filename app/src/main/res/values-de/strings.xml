@@ -52,4 +52,20 @@
     <string name="error_save">Bild kann nicht gespeichert werden: %s</string>
     <string name="error_render">Vorschau fehlgeschlagen: %s</string>
     <string name="error_unknown">unbekannter Fehler</string>
+
+    <string name="credits_title">Credits und Lizenzen</string>
+    <string name="cd_credits">Credits und Lizenzen</string>
+    <string name="cd_back">Zurück</string>
+    <string name="credits_version">Version %s</string>
+    <string name="credits_app_tagline">Verwischen Sie die Gesichter auf Ihren Fotos. Alles geschieht auf Ihrem Gerät, ohne Netzwerk.</string>
+    <string name="credits_section_detection">Gesichtserkennung</string>
+    <string name="credits_section_libraries">Bibliotheken</string>
+    <string name="credits_yunet_subtitle">Gesichtserkennungsmodell (OpenCV Zoo)</string>
+    <string name="credits_kotlin_subtitle">Programmiersprache</string>
+    <string name="credits_androidx_subtitle">Bibliotheken der Oberfläche (Compose, Material 3, Activity, Lifecycle, Window, ExifInterface)</string>
+
+    <string name="discard_title">Ohne Speichern beenden?</string>
+    <string name="discard_body">Die weichgezeichneten Bereiche und Einstellungen dieses Fotos gehen verloren.</string>
+    <string name="action_discard">Beenden</string>
+    <string name="action_cancel">Abbrechen</string>
 </resources>

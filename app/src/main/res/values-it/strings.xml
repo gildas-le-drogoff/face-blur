@@ -54,4 +54,20 @@
     <string name="error_save">Impossibile salvare l\'immagine: %s</string>
     <string name="error_render">Anteprima non riuscita: %s</string>
     <string name="error_unknown">errore sconosciuto</string>
+
+    <string name="credits_title">Crediti e licenze</string>
+    <string name="cd_credits">Crediti e licenze</string>
+    <string name="cd_back">Indietro</string>
+    <string name="credits_version">Versione %s</string>
+    <string name="credits_app_tagline">Sfoca i volti nelle tue foto. Tutto avviene sul tuo dispositivo, senza rete.</string>
+    <string name="credits_section_detection">Rilevamento dei volti</string>
+    <string name="credits_section_libraries">Librerie</string>
+    <string name="credits_yunet_subtitle">Modello di rilevamento dei volti (OpenCV Zoo)</string>
+    <string name="credits_kotlin_subtitle">Linguaggio di programmazione</string>
+    <string name="credits_androidx_subtitle">Librerie dell\'interfaccia (Compose, Material 3, Activity, Lifecycle, Window, ExifInterface)</string>
+
+    <string name="discard_title">Uscire senza salvare?</string>
+    <string name="discard_body">Le zone sfocate e le impostazioni di questa foto andranno perse.</string>
+    <string name="action_discard">Esci</string>
+    <string name="action_cancel">Annulla</string>
 </resources>

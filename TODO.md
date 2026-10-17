@@ -6,7 +6,7 @@
 
 - [ ] Tester sur appareil (Pixel 8 Pro) les gestes du canevas : toucher une zone pour retirer/remettre le flou, toucher hors zone pour en ajouter une, glisser pour tracer, deux doigts pour zoomer/déplacer - Échéance : 18/10/2026 / Contexte : aucun appareil branché pendant le développement, seuls compilation, lint et tests JVM ont été validés
 - [ ] Vérifier sur appareil la conservation des métadonnées en JPEG, PNG et WebP (ExifInterface) et la présence du GPS - Échéance : 18/10/2026 / Contexte : le sélecteur de photos peut retirer la localisation (permission ACCESS_MEDIA_LOCATION non demandée)
-- [ ] Ajouter une licence libre au projet (fichier LICENSE) avant la soumission F-Droid - Échéance : à définir / Contexte : aucune licence dans le dépôt, F-Droid l'exige
+- [ ] Ajouter une licence libre au projet (fichier LICENSE) avant la soumission F-Droid - Échéance : à définir / Contexte : aucune licence dans le dépôt, F-Droid l'exige ; l'écran Crédits et licences est prêt à l'afficher une fois choisie
 
 **A FAIRE (Priorité Moyenne/Basse)**
 
@@ -14,6 +14,7 @@
 - [ ] Mesurer le temps de rendu du flou gaussien sur une grande zone manuelle (4096 px) et réduire l'image avant flou si besoin - Échéance : à définir
 - [ ] Mettre à jour Gradle 9.8.1 (signalé par lint ; onnxruntime n'est plus utilisé) - Échéance : à définir
 - [ ] Vérifier sur appareil les 5 langues (fr, de, it, es, en) : bascule de langue système + sélecteur « Langue de l'application » (Android 13+), repli anglais pour une langue non fournie - Échéance : à définir / Contexte : traductions ajoutées sans build possible dans l'environnement
+- [ ] Vérifier sur appareil l'écran Crédits et licences : ouverture (icône info), dépliage des cartes de licence, retour système, état conservé à la rotation - Échéance : à définir / Contexte : écrit sans JDK dans l'environnement, revue de code uniquement
 
 **EN COURS**
 
@@ -21,6 +22,7 @@
 
 **TERMINÉ (Dernières 24h)**
 
+- [x] Écran Crédits et licences (destination typée Destination.Editor/Credits avec retour système, icône info dans la barre d'outils, cartes dépliables YuNet/MIT + Kotlin + AndroidX/Apache 2.0, textes intégraux lus depuis l'asset du modèle et res/raw, version via PackageManager, 5 langues) - Fait le 17/10/2026
 - [x] Mode unique (sélection et tracé fusionnés) : toucher hors zone = nouvelle zone floutée (taille médiane des visages), zone floutée = retirée, zone exclue = floutée ; slider de seuil inversé (droite = plus de visages) ; export par défaut WebP avec métadonnées conservées ; tests JVM et lint OK - Fait le 17/10/2026
 - [x] Modèle unique face_detection_yunet_2026may.onnx (mêmes poids que 2023mar, supprimé) : APK release 1,2 Mo, 29 tests OK, 57/57 visages sur appareil - Fait le 17/10/2026
 - [x] Localisation : italien, allemand, espagnol ajoutés (français et anglais existants, anglais = repli via values/), localeFilters et locales_config pour le sélecteur de langue par application - Fait le 17/10/2026

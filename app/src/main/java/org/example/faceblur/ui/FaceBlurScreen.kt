@@ -1,10 +1,18 @@
 package org.example.faceblur.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,13 +42,17 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,25 +79,28 @@ import org.example.faceblur.domain.MIN_TILE_PERCENT
 import org.example.faceblur.domain.TILE_PERCENT_STEP
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FaceBlurScreen(viewModel: FaceBlurViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val preview by viewModel.preview.collectAsStateWithLifecycle()
-    val rendering by viewModel.rendering.collectAsStateWithLifecycle()
     val widthClass = currentWidthClass()
     val dimens = dimensFor(widthClass)
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val resources = LocalResources.current
+    var destination by rememberSaveable(stateSaver = DestinationSaver) { mutableStateOf<Destination>(Destination.Editor) }
+
+    // Retour système : referme les crédits avant de quitter l'application.
+    BackHandler(enabled = destination == Destination.Credits) { destination = Destination.Editor }
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         if (uri != null) viewModel.open(uri)
     }
     val openPicker = { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
 
-    LaunchedEffect(state.message) {
+    LaunchedEffect(state.message, destination) {
         val message = state.message ?: return@LaunchedEffect
+        // Le Snackbar est hébergé par l'éditeur : différer le message tant que les crédits sont affichés.
+        if (destination != Destination.Editor) return@LaunchedEffect
         val unknown = resources.getString(R.string.error_unknown)
         val text = when (message) {
             is UiMessage.Saved -> resources.getString(
@@ -111,44 +127,106 @@ fun FaceBlurScreen(viewModel: FaceBlurViewModel) {
     }
 
     CompositionLocalProvider(LocalDimens provides dimens) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(R.string.app_name)) },
-                    actions = {
-                        IconButton(onClick = openPicker, enabled = state.busy == null) {
-                            Icon(painterResource(R.drawable.ic_add_photo_alternate), stringResource(R.string.action_open))
-                        }
-                        IconButton(onClick = viewModel::save, enabled = state.canSave) {
-                            Icon(painterResource(R.drawable.ic_save), stringResource(R.string.action_save))
-                        }
-                    },
-                )
+        AnimatedContent(
+            destination,
+            transitionSpec = {
+                if (targetState == Destination.Credits) {
+                    (slideInHorizontally { it / 3 } + fadeIn()) togetherWith (slideOutHorizontally { -it / 3 } + fadeOut())
+                } else {
+                    (slideInHorizontally { -it / 3 } + fadeIn()) togetherWith (slideOutHorizontally { it / 3 } + fadeOut())
+                }
             },
-            snackbarHost = { SnackbarHost(snackbar) },
-        ) { padding ->
-            val editor = @Composable { modifier: Modifier ->
-                EditorPane(state, preview, rendering, viewModel, openPicker, modifier)
+            label = "destination",
+        ) { dest ->
+            when (dest) {
+                Destination.Editor -> EditorScreen(
+                    state = state,
+                    viewModel = viewModel,
+                    snackbar = snackbar,
+                    onOpen = openPicker,
+                    onCredits = { destination = Destination.Credits },
+                )
+                Destination.Credits -> CreditsLicensesScreen(onBack = { destination = Destination.Editor })
             }
-            val controls = @Composable { modifier: Modifier ->
-                ControlsPanel(state, viewModel, modifier)
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EditorScreen(
+    state: FaceBlurUiState,
+    viewModel: FaceBlurViewModel,
+    snackbar: SnackbarHostState,
+    onOpen: () -> Unit,
+    onCredits: () -> Unit,
+) {
+    val preview by viewModel.preview.collectAsStateWithLifecycle()
+    val rendering by viewModel.rendering.collectAsStateWithLifecycle()
+    val widthClass = currentWidthClass()
+    val dimens = LocalDimens.current
+
+    // Sans ce garde-fou, le retour met l'app en arrière-plan et un rendu non enregistré
+    // est perdu dès que le système tue le processus.
+    val activity = LocalActivity.current
+    var confirmExit by rememberSaveable { mutableStateOf(false) }
+    BackHandler(enabled = state.hasUnsavedChanges) { confirmExit = true }
+    if (confirmExit) {
+        AlertDialog(
+            onDismissRequest = { confirmExit = false },
+            title = { Text(stringResource(R.string.discard_title)) },
+            text = { Text(stringResource(R.string.discard_body)) },
+            confirmButton = {
+                TextButton(onClick = { confirmExit = false; activity?.finish() }) {
+                    Text(stringResource(R.string.action_discard))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmExit = false }) { Text(stringResource(R.string.action_cancel)) }
+            },
+        )
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.app_name)) },
+                actions = {
+                    IconButton(onClick = onOpen, enabled = state.busy == null) {
+                        Icon(painterResource(R.drawable.ic_add_photo_alternate), stringResource(R.string.action_open))
+                    }
+                    IconButton(onClick = viewModel::save, enabled = state.canSave) {
+                        Icon(painterResource(R.drawable.ic_save), stringResource(R.string.action_save))
+                    }
+                    IconButton(onClick = onCredits) {
+                        Icon(painterResource(R.drawable.ic_info), stringResource(R.string.cd_credits))
+                    }
+                },
+            )
+        },
+        snackbarHost = { SnackbarHost(snackbar) },
+    ) { padding ->
+        val editor = @Composable { modifier: Modifier ->
+            EditorPane(state, preview, rendering, viewModel, onOpen, modifier)
+        }
+        val controls = @Composable { modifier: Modifier ->
+            ControlsPanel(state, viewModel, modifier)
+        }
+        if (widthClass == WidthClass.COMPACT) {
+            Column(
+                Modifier.fillMaxSize().padding(padding).padding(dimens.screenPadding),
+                verticalArrangement = Arrangement.spacedBy(dimens.spacing),
+            ) {
+                editor(Modifier.fillMaxWidth().weight(dimens.previewWeight))
+                controls(Modifier.fillMaxWidth().weight(dimens.controlsWeight))
             }
-            if (widthClass == WidthClass.COMPACT) {
-                Column(
-                    Modifier.fillMaxSize().padding(padding).padding(dimens.screenPadding),
-                    verticalArrangement = Arrangement.spacedBy(dimens.spacing),
-                ) {
-                    editor(Modifier.fillMaxWidth().weight(dimens.previewWeight))
-                    controls(Modifier.fillMaxWidth().weight(dimens.controlsWeight))
-                }
-            } else {
-                Row(
-                    Modifier.fillMaxSize().padding(padding).padding(dimens.screenPadding),
-                    horizontalArrangement = Arrangement.spacedBy(dimens.sectionSpacing),
-                ) {
-                    editor(Modifier.fillMaxSize().weight(dimens.previewWeight))
-                    controls(Modifier.fillMaxSize().weight(dimens.controlsWeight))
-                }
+        } else {
+            Row(
+                Modifier.fillMaxSize().padding(padding).padding(dimens.screenPadding),
+                horizontalArrangement = Arrangement.spacedBy(dimens.sectionSpacing),
+            ) {
+                editor(Modifier.fillMaxSize().weight(dimens.previewWeight))
+                controls(Modifier.fillMaxSize().weight(dimens.controlsWeight))
             }
         }
     }
@@ -173,6 +251,8 @@ private fun EditorPane(
             val shown = preview?.takeIf { it.source === image.source.bitmap }?.bitmap ?: image.source.bitmap
             val imageBitmap = remember(shown) { shown.asImageBitmap() }
             val zoom = remember(image) { ZoomState() }
+            // Déclaré plus bas que celui d'EditorScreen, donc prioritaire : un premier retour ajuste l'image à l'écran.
+            BackHandler(enabled = zoom.isZoomed) { zoom.reset() }
             // Barre d'outils et aide hors de l'image : rien ne masque ni n'intercepte les visages.
             Column(
                 Modifier.fillMaxSize(),

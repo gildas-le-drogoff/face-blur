@@ -50,6 +50,9 @@ sealed interface UiMessage {
 
 class LoadedImage(val source: SourceImage, val candidates: List<Face>)
 
+/** Ce qui détermine les pixels exportés : sert à savoir si le dernier enregistrement est à jour. */
+data class OutputSignature(val blurred: List<FaceBox>, val blur: BlurSettings, val drawBoxes: Boolean)
+
 data class FaceBlurUiState(
     val image: LoadedImage? = null,
     val busy: Busy? = null,
@@ -62,6 +65,7 @@ data class FaceBlurUiState(
     val showOverlay: Boolean = true,
     val export: ExportOptions = ExportOptions(),
     val message: UiMessage? = null,
+    val lastSaved: OutputSignature? = null,
 ) {
     /** Calculé une fois par état (NMS comprise). */
     val regions: List<FaceRegion> by lazy {
@@ -71,6 +75,10 @@ data class FaceBlurUiState(
     val manualCount: Int get() = manual.size
     val blurredCount: Int get() = regions.count { it.blurred }
     val canSave: Boolean get() = image != null && busy == null && (blur.enabled || drawBoxes)
+    val signature: OutputSignature by lazy { OutputSignature(regions.filter { it.blurred }.map { it.box }, blur, drawBoxes) }
+
+    /** Image ouverte dont le rendu actuel n'a pas été enregistré (rien de perdu si rien à exporter). */
+    val hasUnsavedChanges: Boolean get() = image != null && (blur.enabled || drawBoxes) && signature != lastSaved
 
     companion object {
         const val DEFAULT_THRESHOLD = 0.5f
@@ -147,6 +155,7 @@ class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
                         excluded = emptySet(),
                         manual = emptyList(),
                         nextManualId = 0,
+                        lastSaved = null,
                     )
                 }
                 FaceDetectionLog.i(TAG) { "Loaded ${loaded.source.name}: ${_state.value.detectedCount} faces at default threshold" }
@@ -238,7 +247,10 @@ class FaceBlurViewModel(app: Application) : AndroidViewModel(app) {
                         }
                     }
                 }
-                _state.update { it.copy(busy = null, message = UiMessage.Saved(result.path, result.metadata)) }
+                // Signature de l'état enregistré, pas de l'état courant : il a pu changer pendant l'écriture.
+                _state.update {
+                    it.copy(busy = null, message = UiMessage.Saved(result.path, result.metadata), lastSaved = s.signature)
+                }
             } catch (e: CancellationException) {
                 throw e
             } catch (t: Throwable) {

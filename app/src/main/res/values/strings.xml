@@ -57,4 +57,28 @@
     <string name="error_save">Cannot save the image: %s</string>
     <string name="error_render">Preview failed: %s</string>
     <string name="error_unknown">unknown error</string>
+
+    <string name="credits_title">Credits &amp; licenses</string>
+    <string name="cd_credits">Credits and licenses</string>
+    <string name="cd_back">Back</string>
+    <string name="credits_version">Version %s</string>
+    <string name="credits_app_tagline">Blur the faces in your photos. Everything happens on your device, without a network.</string>
+    <string name="credits_section_detection">Face detection</string>
+    <string name="credits_section_libraries">Libraries</string>
+    <string name="credits_yunet_name" translatable="false">YuNet</string>
+    <string name="credits_yunet_subtitle">Face detection model (OpenCV Zoo)</string>
+    <string name="credits_yunet_copyright" translatable="false">© 2020 Shiqi Yu</string>
+    <string name="credits_kotlin_name" translatable="false">Kotlin</string>
+    <string name="credits_kotlin_subtitle">Programming language</string>
+    <string name="credits_kotlin_copyright" translatable="false">© JetBrains s.r.o. and contributors</string>
+    <string name="credits_androidx_name" translatable="false">AndroidX / Jetpack Compose</string>
+    <string name="credits_androidx_subtitle">Interface libraries (Compose, Material 3, Activity, Lifecycle, Window, ExifInterface)</string>
+    <string name="credits_androidx_copyright" translatable="false">© The Android Open Source Project</string>
+    <string name="license_mit_name" translatable="false">MIT</string>
+    <string name="license_apache_name" translatable="false">Apache License 2.0</string>
+
+    <string name="discard_title">Leave without saving?</string>
+    <string name="discard_body">The blurred zones and settings for this photo will be lost.</string>
+    <string name="action_discard">Leave</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

@@ -54,4 +54,20 @@
     <string name="error_save">Impossible d\'enregistrer l\'image : %s</string>
     <string name="error_render">Échec de l\'aperçu : %s</string>
     <string name="error_unknown">erreur inconnue</string>
+
+    <string name="credits_title">Crédits et licences</string>
+    <string name="cd_credits">Crédits et licences</string>
+    <string name="cd_back">Retour</string>
+    <string name="credits_version">Version %s</string>
+    <string name="credits_app_tagline">Floutez les visages de vos photos. Tout se passe sur votre appareil, sans réseau.</string>
+    <string name="credits_section_detection">Détection des visages</string>
+    <string name="credits_section_libraries">Bibliothèques</string>
+    <string name="credits_yunet_subtitle">Modèle de détection des visages (OpenCV Zoo)</string>
+    <string name="credits_kotlin_subtitle">Langage de programmation</string>
+    <string name="credits_androidx_subtitle">Bibliothèques de l\'interface (Compose, Material 3, Activity, Lifecycle, Window, ExifInterface)</string>
+
+    <string name="discard_title">Quitter sans enregistrer ?</string>
+    <string name="discard_body">Les zones floutées et les réglages de cette photo seront perdus.</string>
+    <string name="action_discard">Quitter</string>
+    <string name="action_cancel">Annuler</string>
 </resources>
