@@ -39,6 +39,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,8 +49,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import org.example.faceblur.R
 import org.example.faceblur.data.MetadataOutcome
 import org.example.faceblur.domain.BlurShape
@@ -70,6 +74,7 @@ fun FaceBlurScreen(viewModel: FaceBlurViewModel) {
     val widthClass = currentWidthClass()
     val dimens = dimensFor(widthClass)
     val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val resources = LocalResources.current
 
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -99,8 +104,9 @@ fun FaceBlurScreen(viewModel: FaceBlurViewModel) {
                 message.detail ?: unknown,
             )
         }
+        // Scope indépendant : la remise à null du message relance cet effet sans fermer le snackbar.
+        scope.launch { snackbar.showSnackbar(text) }
         viewModel.messageShown()
-        snackbar.showSnackbar(text)
     }
 
     CompositionLocalProvider(LocalDimens provides dimens) {
@@ -196,7 +202,8 @@ private fun EditorPane(
                         rendering,
                         Modifier.align(Alignment.TopCenter).fillMaxWidth(),
                     ) {
-                        LinearProgressIndicator(Modifier.fillMaxWidth())
+                        val label = stringResource(R.string.rendering)
+                        LinearProgressIndicator(Modifier.fillMaxWidth().semantics { contentDescription = label })
                     }
                 }
                 Text(
