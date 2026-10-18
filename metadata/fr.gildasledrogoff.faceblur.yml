@@ -11,7 +11,7 @@ AutoName: FaceBlur
 
 RepoType: git
 Repo: https://github.com/gildas-le-drogoff/face-blur.git
-Binaries: https://github.com/gildas-le-drogoff/face-blur/releases/download/v%c/faceblur-%c.apk
+Binaries: https://github.com/gildas-le-drogoff/face-blur/releases/download/v%v/faceblur-%v.apk
 
 Builds:
   - versionName: "1.0"
@@ -28,7 +28,6 @@ Builds:
 AllowedAPKSigningKeys: ad361b2890ee182a5a747b11940875f347e2ec722ad703ef23c69892ef7b7a1c
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags
-UpdateCheckData: '|v(\d+)||v(\d+)'
+UpdateCheckMode: Tags ^v[0-9.]+$
 CurrentVersion: "1.0"
 CurrentVersionCode: 1

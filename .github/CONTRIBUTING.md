@@ -235,9 +235,11 @@ For reference, a release consists of:
 3. Tagging the commit `v<versionName>`; F-Droid picks up new versions from
    these tags.
 
-Signed APKs, their checksums and build provenance attestations are published on
-the [releases page](https://github.com/gildas-le-drogoff/face-blur/releases) by
-the *Release* workflow.
+Pushing the tag runs the *Release* workflow, which publishes the signed
+`faceblur-<versionName>.apk`, its checksums and build provenance attestations on
+the [releases page](https://github.com/gildas-le-drogoff/face-blur/releases)
+under the same tag. F-Droid verifies its own build against that APK, so a
+published release is never replaced or deleted.
 
 ## Code of conduct
 
