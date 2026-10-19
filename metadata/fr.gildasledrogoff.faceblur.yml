@@ -4,8 +4,13 @@ Categories:
   - Security
 License: AGPL-3.0-or-later
 AuthorName: Gildas Le Drogoff
+AuthorName: Gildas Le Drogoff
+AuthorWebSite: https://gildas.le-drogoff.fr/
+WebSite: https://github.com/gildas-le-drogoff/face-blur/
 SourceCode: https://github.com/gildas-le-drogoff/face-blur
 IssueTracker: https://github.com/gildas-le-drogoff/face-blur/issues
+Changelog:
+  https://github.com/gildas-le-drogoff/face-blur/tree/HEAD/fastlane/metadata/android/en-US/changelogs
 
 AutoName: FaceBlur
 
@@ -15,7 +20,7 @@ Binaries:
   https://github.com/gildas-le-drogoff/face-blur/releases/download/v%v/faceblur-%v.apk
 
 Builds:
-  - versionName: '1.0'
+  - versionName: 1.0.0
     versionCode: 1
     commit: 6c673387bbcf1622c124153bd30c6d3eff36ca73
     subdir: app
@@ -30,6 +35,6 @@ AllowedAPKSigningKeys:
   ad361b2890ee182a5a747b11940875f347e2ec722ad703ef23c69892ef7b7a1c
 
 AutoUpdateMode: Version
-UpdateCheckMode: Tags ^v[0-9.]+$
-CurrentVersion: '1.0'
+UpdateCheckMode: Tags ^v[0-9]+\.[0-9]+\.[0-9]+$
+CurrentVersion: 1.0.0
 CurrentVersionCode: 1
