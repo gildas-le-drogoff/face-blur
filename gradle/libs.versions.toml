@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 [versions]
-agp = "9.4.1"
+agp = "9.5.0"
 # Doit correspondre au KGP embarqué par AGP 9.4.1 (2.2.10).
 kotlin = "2.2.10"
 coreKtx = "1.19.1"
